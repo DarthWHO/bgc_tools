@@ -1,6 +1,7 @@
 import { Button, CssBaseline, Typography } from "@mui/material";
 import { createBrowserRouter, Navigate, Route } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppLayout from "./ui/AppLayout.jsx";
 import Error from "./pages/Error.jsx";
 import Login from "./pages/Login.jsx";
@@ -10,6 +11,15 @@ import PageNotFound from "./pages/PageNotFound.jsx";
 import Welcome from "./pages/Welcome.jsx";
 import About from "./pages/About.jsx";
 import { Toaster } from "react-hot-toast";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      cacheTime: 1000 * 60 * 10, // 10 minutes
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
@@ -29,7 +39,7 @@ const router = createBrowserRouter([
 
 const App = () => {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <CssBaseline />
       <RouterProvider router={router} />
       <Toaster
@@ -48,7 +58,7 @@ const App = () => {
           },
         }}
       />
-    </>
+    </QueryClientProvider>
   );
 };
 
