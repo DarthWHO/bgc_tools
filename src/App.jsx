@@ -8,6 +8,7 @@ import Oathsworn from "./pages/Oathsworn.jsx";
 import Middara from "./pages/Middara.jsx";
 import PageNotFound from "./pages/PageNotFound.jsx";
 import Welcome from "./pages/Welcome.jsx";
+import About from "./pages/About.jsx";
 import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "/welcome", element: <Welcome /> },
       { path: "/oathsworn", element: <Oathsworn /> },
       { path: "/middara", element: <Middara /> },
+      { path: "/about", element: <About /> },
     ],
   },
   { path: "/login", element: <Login /> },
