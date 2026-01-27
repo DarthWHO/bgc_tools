@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import initialData from "../data/startDecks.json";
 
 export function useMightDeckManager() {
-  const { data, isLoading, setData } = useLocalStorage("gameData", null);
+  const { data, isLoading, setData } = useLocalStorage("oathSwornData", null);
 
   useEffect(() => {
     if (data === null) {
@@ -77,7 +77,12 @@ export function useMightDeckManager() {
       if (deck.deckID === deckID) {
         return {
           ...deck,
-          deck: deck.deck.map((card) => ({ ...card, isDealt: false })),
+          // deck: deck.deck.map((card) =>
+          //   !card.isActive ? { ...card, isDealt: false } : card,
+          // ),
+          deck: deck.deck.map((card) =>
+            card.isActive ? { ...card, isDealt: false, isActive: false } : card,
+          ),
         };
       }
       return deck;

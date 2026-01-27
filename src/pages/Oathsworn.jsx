@@ -1,38 +1,21 @@
-import { useDeckManager } from "../hooks/useMightDeckManager";
+import MightDeckHeading from "../features/mightDeck/MightDeckHeading";
+import MightDeckSummaryArea from "../features/mightDeck/MightDeckSummaryArea";
+import MightDeckDecksArea from "../features/mightDeck/MightDeckDecksArea";
+import { Box, Grid } from "@mui/material";
 
 function Oathsworn() {
-  const {
-    decks,
-    isLoading,
-    dealRandomCard,
-    resetDeck,
-    getDeckStats,
-    getUndealtCards,
-  } = useDeckManager();
-
-  const handleDealRandom = (deckID) => {
-    const card = dealRandomCard(deckID);
-    if (card) {
-      console.log("Dealt card:", card);
-    }
-  };
-
-  if (isLoading) return <div>Loading...</div>;
-
-  const whiteStats = getDeckStats("owhite");
-
   return (
-    <div>
-      <h1>Oathsworn Card Manager</h1>
-
-      <button onClick={() => handleDealRandom("owhite")}>
-        Deal Random White Card ({whiteStats.remaining} remaining)
-      </button>
-
-      <button onClick={() => resetDeck("owhite")}>Reset White Deck</button>
-
-      <pre>{JSON.stringify(decks, null, 2)}</pre>
-    </div>
+    <Box sx={{ flexGrow: 1, p: 1 }}>
+      <Grid container spacing={1}>
+        <Grid size={{ xs: 12, md: 12 }}>
+          <MightDeckHeading />
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
+          <MightDeckSummaryArea />
+        </Grid>
+        <MightDeckDecksArea />
+      </Grid>
+    </Box>
   );
 }
 
