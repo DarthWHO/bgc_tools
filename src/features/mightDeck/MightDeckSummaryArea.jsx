@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 import { useMightDeckManager } from "../../hooks/useMightDeckManager";
+import { useAppData } from "../../hooks/useAppData";
 import {
   calculateTotalValue,
   calculateCrits,
@@ -17,23 +18,18 @@ import {
 } from "../../utils/calculations";
 
 function MightDeckSummaryArea() {
-  const {
-    decks,
-    dealRandomCard,
-    isLoading,
-    getDeckStats,
-    getActiveType,
-    resetToInitial,
-    changeType,
-  } = useMightDeckManager();
+  const { decks, dealRandomCard, isLoading, getDeckStats } =
+    useMightDeckManager();
+
+  const { getOathswornActive, setOathswornActive } = useAppData();
+
   if (!decks) return null;
 
-  const total = calculateTotalValue(decks, getActiveType());
-  const misses = calculateMisses(decks, getActiveType());
-  const crits = calculateCrits(decks, getActiveType());
+  const total = calculateTotalValue(decks, getOathswornActive());
+  const misses = calculateMisses(decks, getOathswornActive());
+  const crits = calculateCrits(decks, getOathswornActive());
 
-  console.log(getActiveType());
-
+  console.log(getOathswornActive());
   const whiteStats = getDeckStats("owhite");
 
   const executeFunction = (action, param) => {
@@ -97,7 +93,7 @@ function MightDeckSummaryArea() {
                     variant="outlined"
                     disabled={false}
                     sx={{ width: "170px", m: 0 }}
-                    onClick={() => changeType()}
+                    onClick={() => setOathswornActive()}
                   >
                     Switch
                   </Button>
@@ -111,7 +107,7 @@ function MightDeckSummaryArea() {
                   </Button>
                   <Button
                     variant="outlined"
-                    onClick={() => resetToInitial()}
+                    onClick={null}
                     sx={{ width: "170px", m: 0 }}
                   >
                     Display Chances

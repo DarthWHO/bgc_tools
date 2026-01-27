@@ -3,18 +3,16 @@ import { useEffect } from "react";
 import initialData from "../data/startDecks.json";
 
 export function useMightDeckManager() {
-  const { data, isLoading, setData } = useLocalStorage("oathSwornData", null);
+  const { data, isLoading, setData } = useLocalStorage(
+    "oathswornDeckData",
+    null,
+  );
 
   useEffect(() => {
     if (data === null) {
       setData(initialData);
     }
   }, [data, setData]);
-
-  const getActiveType = () => {
-    if (!data) return null;
-    return data[0].oathswornActive;
-  };
 
   const getUndealtCards = (deckID) => {
     if (!data) return [];
@@ -136,18 +134,7 @@ export function useMightDeckManager() {
     return { total, dealt, remaining };
   };
 
-  const changeType = () => {
-    if (!data) return;
-
-    const updatedData = data.map((deck) => ({
-      ...deck,
-      oathswornActive: !deck.oathswornActive,
-    }));
-
-    setData(updatedData);
-  };
-
-  const resetToInitial = () => {
+  const resetMightDeckDataToInitial = () => {
     setData(initialData);
   };
 
@@ -161,8 +148,6 @@ export function useMightDeckManager() {
     clearActiveCards,
     getUndealtCards,
     getDeckStats,
-    getActiveType,
-    resetToInitial,
-    changeType,
+    resetMightDeckDataToInitial,
   };
 }
