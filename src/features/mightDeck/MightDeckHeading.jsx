@@ -1,10 +1,12 @@
 import { Box, Grid, Typography } from "@mui/material";
 import MightDeckInstructions from "./MightDeckInstructions";
 import MightDeckHistory from "./MightDeckHistory";
-
-const isOathsworn = true; // This would typically come from props or state
+import { useMightDeckManager } from "../../hooks/useMightDeckManager";
 
 function MightDeckHeading() {
+  const { getActiveType } = useMightDeckManager();
+  const isOathsworn = getActiveType();
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={3} justifyContent="center">

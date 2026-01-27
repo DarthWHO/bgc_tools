@@ -11,6 +11,11 @@ export function useMightDeckManager() {
     }
   }, [data, setData]);
 
+  const getActiveType = () => {
+    if (!data) return null;
+    return data[0].oathswornActive;
+  };
+
   const getUndealtCards = (deckID) => {
     if (!data) return [];
     const deck = data.find((d) => d.deckID === deckID);
@@ -131,6 +136,21 @@ export function useMightDeckManager() {
     return { total, dealt, remaining };
   };
 
+  const changeType = () => {
+    if (!data) return;
+
+    const updatedData = data.map((deck) => ({
+      ...deck,
+      oathswornActive: !deck.oathswornActive,
+    }));
+
+    setData(updatedData);
+  };
+
+  const resetToInitial = () => {
+    setData(initialData);
+  };
+
   return {
     decks: data,
     isLoading,
@@ -141,5 +161,8 @@ export function useMightDeckManager() {
     clearActiveCards,
     getUndealtCards,
     getDeckStats,
+    getActiveType,
+    resetToInitial,
+    changeType,
   };
 }
