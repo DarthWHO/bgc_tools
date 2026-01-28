@@ -119,7 +119,6 @@ function MightDeckSummaryArea() {
         </Box>
       </CardContent>
       <CardActions></CardActions>
-      <pre>{JSON.stringify(decks, null, 2)}</pre>
     </Card>
   );
 }
