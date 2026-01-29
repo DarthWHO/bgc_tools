@@ -4,13 +4,9 @@ function MightDeckMain() {
   const deckBackground = "rgb(255, 255, 255, 0.2)";
 
   return (
-    <Card sx={{ minHeight: 0, backgroundColor: "rgb(230, 240, 250)" }}>
-      <Grid sx={{ backgroundColor: deckBackground }}>
-        <Grid
-          container
-          spacing={1}
-          sx={{ backgroundColor: "rgb(255, 255, 255)" }}
-        >
+    <Card>
+      <Grid>
+        <Grid container spacing={1}>
           <Grid size={{ xs: 6, md: 6 }}>Deck Summary</Grid>
           <Grid size={{ xs: 6, md: 6 }}>DeckButtons</Grid>
         </Grid>

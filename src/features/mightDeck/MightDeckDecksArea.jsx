@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 import MightDeckMain from "./MightDeckMain";
 
 function MightDeckDecksArea() {
@@ -7,16 +7,9 @@ function MightDeckDecksArea() {
     <>
       {colours.map((colour) => (
         <Grid key={colour} size={{ xs: 12, md: 6, lg: 3 }}>
-          <Box
-            border={1}
-            borderColor={colour.toLowerCase()}
-            borderRadius={2}
-            p={1}
-            m={0.5}
-            textAlign="center"
-          >
-            <MightDeckMain />
-          </Box>
+          <Card>
+            <MightDeckMain colour={colour.toLowerCase()} />
+          </Card>
         </Grid>
       ))}
     </>
