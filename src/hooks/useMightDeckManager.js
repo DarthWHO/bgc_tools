@@ -3,16 +3,16 @@ import { useEffect } from "react";
 import initialData from "../data/startDecks.json";
 
 export function useMightDeckManager() {
-  const { data, isLoading, setData } = useLocalStorage(
+  const { data, isLoading, setDataAsync } = useLocalStorage(
     "oathswornDeckData",
     null,
   );
 
   useEffect(() => {
     if (data === null) {
-      setData(initialData);
+      setDataAsync(initialData);
     }
-  }, [data, setData]);
+  }, [data, setDataAsync]);
 
   const getUndealtCards = (deckID) => {
     if (!data) return [];
@@ -20,7 +20,7 @@ export function useMightDeckManager() {
     return deck ? deck.deck.filter((card) => !card.isDealt) : [];
   };
 
-  const dealRandomCard = (deckID) => {
+  const dealRandomCard = async (deckID) => {
     if (!data) return null;
 
     const undealtCards = getUndealtCards(deckID);
@@ -46,11 +46,11 @@ export function useMightDeckManager() {
       return deck;
     });
 
-    setData(updatedData);
+    await setDataAsync(updatedData);
     return selectedCard;
   };
 
-  const dealCard = (deckID, cardID) => {
+  const dealCard = async (deckID, cardID) => {
     if (!data) return null;
 
     const updatedData = data.map((deck) => {
@@ -67,13 +67,13 @@ export function useMightDeckManager() {
       return deck;
     });
 
-    setData(updatedData);
+    await setDataAsync(updatedData);
 
     const deck = data.find((d) => d.deckID === deckID);
     return deck ? deck.deck.find((c) => c.cardID === cardID) : null;
   };
 
-  const resetDeck = (deckID) => {
+  const resetDeck = async (deckID) => {
     if (!data) return;
 
     const updatedData = data.map((deck) => {
@@ -91,10 +91,10 @@ export function useMightDeckManager() {
       return deck;
     });
 
-    setData(updatedData);
+    await setDataAsync(updatedData);
   };
 
-  const resetAllDecks = () => {
+  const resetAllDecks = async () => {
     if (!data) return;
 
     const updatedData = data.map((deck) => ({
@@ -102,10 +102,10 @@ export function useMightDeckManager() {
       deck: deck.deck.map((card) => ({ ...card, isDealt: false })),
     }));
 
-    setData(updatedData);
+    await setDataAsync(updatedData);
   };
 
-  const clearActiveCards = (deckID) => {
+  const clearActiveCards = async (deckID) => {
     if (!data) return;
 
     const updatedData = data.map((deck) => {
@@ -118,7 +118,7 @@ export function useMightDeckManager() {
       return deck;
     });
 
-    setData(updatedData);
+    await setDataAsync(updatedData);
   };
 
   const getDeckStats = (deckID) => {
@@ -134,8 +134,8 @@ export function useMightDeckManager() {
     return { total, dealt, remaining };
   };
 
-  const resetMightDeckDataToInitial = () => {
-    setData(initialData);
+  const resetMightDeckDataToInitial = async () => {
+    await setDataAsync(initialData);
   };
 
   return {

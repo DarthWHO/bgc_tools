@@ -29,7 +29,6 @@ function MightDeckSummaryArea() {
   const misses = calculateMisses(decks, getOathswornActive());
   const crits = calculateCrits(decks, getOathswornActive());
 
-  console.log(getOathswornActive());
   const whiteStats = getDeckStats("owhite");
 
   const executeFunction = (action, param) => {

@@ -3,29 +3,29 @@ import { useEffect } from "react";
 import appData from "../data/appData.json";
 
 export function useAppData() {
-  const { data, isLoading, setData } = useLocalStorage(
+  const { data, isLoading, setDataAsync } = useLocalStorage(
     "oathswornAppData",
     null,
   );
 
   useEffect(() => {
     if (data === null) {
-      setData(appData);
+      setDataAsync(appData);
     }
-  }, [data, setData]);
+  }, [data, setDataAsync]);
 
   const getOathswornActive = () => {
     if (!data) return;
     return data.oathswornActive;
   };
 
-  const setOathswornActive = () => {
+  const setOathswornActive = async () => {
     if (!data) return;
-    setData({ ...data, oathswornActive: !data.oathswornActive });
+    await setDataAsync({ ...data, oathswornActive: !data.oathswornActive });
   };
 
-  const resetAppDataToInitial = () => {
-    setData(appData);
+  const resetAppDataToInitial = async () => {
+    await setDataAsync(appData);
   };
 
   return {
