@@ -1,6 +1,6 @@
 import { Typography, Box } from "@mui/material";
 
-function About() {
+const About = () => {
   return (
     <Box sx={{ flexGrow: 1, p: 1 }}>
       <Typography variant="h4" gutterBottom>
@@ -8,6 +8,6 @@ function About() {
       </Typography>
     </Box>
   );
-}
+};
 
 export default About;

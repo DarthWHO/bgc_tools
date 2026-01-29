@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import Grid from "@mui/material/Grid";
-import MightDeckInstructionsListItem from "./MightDeckInstructionsListItem";
+import MDListItem from "./MDInstructionsListItem";
 
 const instructions = [
   {
@@ -37,7 +37,7 @@ const instructions = [
   },
 ];
 
-export default function InstructionsList() {
+const MDInstructionsList = () => {
   const dense = true;
 
   return (
@@ -47,7 +47,7 @@ export default function InstructionsList() {
           <List dense={dense}>
             {instructions.map((instruction) => {
               return (
-                <MightDeckInstructionsListItem
+                <MDListItem
                   key={instruction.id}
                   primary={instruction.primary}
                   secondary={instruction.secondary}
@@ -59,4 +59,6 @@ export default function InstructionsList() {
       </Grid>
     </Box>
   );
-}
+};
+
+export default MDInstructionsList;

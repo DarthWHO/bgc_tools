@@ -1,6 +1,6 @@
 import { Typography, Box } from "@mui/material";
 
-function Middara() {
+const Middara = () => {
   return (
     <Box sx={{ flexGrow: 1, p: 1 }}>
       <Typography variant="h4" gutterBottom>
@@ -8,6 +8,6 @@ function Middara() {
       </Typography>
     </Box>
   );
-}
+};
 
 export default Middara;

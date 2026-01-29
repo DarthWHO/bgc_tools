@@ -3,7 +3,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-export default function MightDeckInstructionsListItem({ primary, secondary }) {
+const MDInstructionsListItem = ({ primary, secondary }) => {
   const enableSecondary = true;
   return (
     <ListItem>
@@ -16,4 +16,6 @@ export default function MightDeckInstructionsListItem({ primary, secondary }) {
       />
     </ListItem>
   );
-}
+};
+
+export default MDInstructionsListItem;

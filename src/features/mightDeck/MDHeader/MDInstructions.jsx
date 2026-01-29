@@ -1,9 +1,10 @@
 import HelpIcon from "@mui/icons-material/Help";
 
-export default function MightDeckInstructions() {
+const MDInstructions = () => {
   return (
     <>
       <HelpIcon cursor="pointer" />
     </>
   );
-}
+};
+export default MDInstructions;
