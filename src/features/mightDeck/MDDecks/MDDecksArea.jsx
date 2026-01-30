@@ -2,7 +2,7 @@ import { Card, Box, Grid } from "@mui/material";
 import MDDeckMain from "./MDDeckMain";
 
 const MDDecksArea = () => {
-  const colours = ["White", "Yellow", "Red", "Black"];
+  const colours = ["white", "yellow", "red", "black"];
   return (
     <Grid container spacing={1}>
       {colours.map((colour) => (
