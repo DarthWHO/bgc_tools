@@ -1,6 +1,7 @@
 import { useLocalStorage } from "./useLocalStorage";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import initialData from "../data/startDecks.json";
+import { getFromLocalStorage } from "../utils/localStorage";
 
 export function useMightDeckManager() {
   const { data, isLoading, setDataAsync } = useLocalStorage(
@@ -98,53 +99,65 @@ export function useMightDeckManager() {
     return deck ? deck.deck.find((c) => c.cardID === cardID) : null;
   };
 
-  const dealMultipleRandomCards = async (deckID, count) => {
-    if (!data) return [];
+  const dealMultipleRandomCards = useCallback(
+    async (deckID, count) => {
+      // Read fresh data from localStorage to avoid stale closures
+      const currentData = await getFromLocalStorage("oathswornDeckData", null);
+      if (!currentData) return [];
 
-    const undealtCards = getUndealtCards(deckID);
-    if (undealtCards.length === 0) {
-      console.warn(`No undealt cards available in deck: ${deckID}`);
-      return [];
-    }
+      const deck = currentData.find((d) => d.deckID === deckID);
+      if (!deck) return [];
 
-    const numCardsToDeal = Math.min(count, undealtCards.length);
-    const selectedCards = [];
-    const availableCards = [...undealtCards];
-
-    // Select random cards
-    for (let i = 0; i < numCardsToDeal; i++) {
-      const randomIndex = Math.floor(Math.random() * availableCards.length);
-      selectedCards.push(availableCards[randomIndex]);
-      availableCards.splice(randomIndex, 1);
-    }
-
-    let nextDrawOrder = getNextDrawOrder(deckID);
-    const selectedCardIDs = selectedCards.map((card) => card.cardID);
-
-    const updatedData = data.map((deck) => {
-      if (deck.deckID === deckID) {
-        return {
-          ...deck,
-          deck: deck.deck.map((card) => {
-            if (selectedCardIDs.includes(card.cardID)) {
-              const cardDrawOrder = nextDrawOrder++;
-              return {
-                ...card,
-                isDealt: true,
-                isActive: true,
-                drawOrder: cardDrawOrder,
-              };
-            }
-            return card;
-          }),
-        };
+      const undealtCards = deck.deck.filter((card) => !card.isDealt);
+      if (undealtCards.length === 0) {
+        console.warn(`No undealt cards available in deck: ${deckID}`);
+        return [];
       }
-      return deck;
-    });
 
-    await setDataAsync(updatedData);
-    return selectedCards;
-  };
+      const numCardsToDeal = Math.min(count, undealtCards.length);
+      const selectedCards = [];
+      const availableCards = [...undealtCards];
+
+      // Select random cards
+      for (let i = 0; i < numCardsToDeal; i++) {
+        const randomIndex = Math.floor(Math.random() * availableCards.length);
+        selectedCards.push(availableCards[randomIndex]);
+        availableCards.splice(randomIndex, 1);
+      }
+
+      const maxDrawOrder = deck.deck.reduce(
+        (max, card) => Math.max(max, card.drawOrder || 0),
+        0,
+      );
+      let nextDrawOrder = maxDrawOrder + 1;
+      const selectedCardIDs = selectedCards.map((card) => card.cardID);
+
+      const updatedData = currentData.map((d) => {
+        if (d.deckID === deckID) {
+          return {
+            ...d,
+            deck: d.deck.map((card) => {
+              if (selectedCardIDs.includes(card.cardID)) {
+                const cardDrawOrder = nextDrawOrder++;
+                return {
+                  ...card,
+                  isDealt: true,
+                  isActive: true,
+                  drawOrder: cardDrawOrder,
+                };
+              }
+              return card;
+            }),
+          };
+        }
+        return d;
+      });
+
+      await setDataAsync(updatedData);
+      return selectedCards;
+    },
+    [setDataAsync],
+  );
 
   const resetDeck = async (deckID) => {
     if (!data) return;

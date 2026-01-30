@@ -1,21 +1,23 @@
 import { Button, Stack } from "@mui/material";
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 import { useAppData } from "../../../hooks/useAppData";
+import { useDeckDraw } from "../../../hooks/useDeckDraw";
+import { getAllDeckIds } from "../../../utils/deckConstants";
 
 const MDSummaryButtons = () => {
-  const { decks, dealRandomCard, isLoading, getDeckStats } =
-    useMightDeckManager();
-  const { setOathswornActive } = useAppData();
-  if (!decks) return null;
-  const whiteStats = getDeckStats("owhite");
+  const { decks, isLoading, getDeckStats } = useMightDeckManager();
+  const { setOathswornActive, getOathswornActive } = useAppData();
+  const { drawFromMultipleDecks } = useDeckDraw();
 
-  const handleDealRandom = (deckID) => {
-    const card = dealRandomCard(deckID);
-    if (card) {
-      console.log("Dealt card:", card);
-    }
-  };
-  const isRollDisabled = whiteStats.remaining === 0 || isLoading;
+  if (!decks) return null;
+
+  const deckIds = getAllDeckIds(getOathswornActive());
+  const allDecksEmpty = deckIds.every(
+    (deckId) => getDeckStats(deckId).remaining === 0,
+  );
+
+  const isDrawAllDisabled = allDecksEmpty || isLoading;
+
   return (
     <Stack
       direction="column"
@@ -28,9 +30,9 @@ const MDSummaryButtons = () => {
     >
       <Button
         variant="contained"
-        disabled={isRollDisabled}
+        disabled={isDrawAllDisabled}
         sx={{ width: "170px" }}
-        onClick={() => handleDealRandom("owhite")}
+        onClick={() => drawFromMultipleDecks(deckIds)}
       >
         Draw All
       </Button>

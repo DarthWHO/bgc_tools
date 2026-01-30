@@ -1,22 +1,26 @@
 import {
   Card,
   CardActions,
-  Grid,
   Stack,
-  Button,
   CardContent,
   CardHeader,
-  Typography,
-  Box,
 } from "@mui/material";
 
 import NumberSpinner from "../../../ui/NumberSpinner";
+import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
 
 import MDDeckSummary from "./MDDeckSummary";
 import MDDeckButtons from "./MDDeckButtons";
 import MDCardsArea from "./MDCardsArea";
 
 const MDDeckMain = ({ colour, deckId }) => {
+  const { getCardsToDraw, setCardsToDraw } = useCardsToDraw();
+  const drawCount = getCardsToDraw(deckId);
+
+  const handleDrawCountChange = (nextValue) => {
+    setCardsToDraw(deckId, nextValue);
+  };
+
   return (
     <Card>
       <CardHeader
@@ -27,7 +31,12 @@ const MDDeckMain = ({ colour, deckId }) => {
         <Stack direction="row" spacing={2}>
           <Stack spacing={1} flexGrow={1} sx={{ alignItems: "center", mb: 0 }}>
             <MDDeckSummary deckId={deckId} />
-            <NumberSpinner min={0} max={18} defaultValue={2} />
+            <NumberSpinner
+              min={0}
+              max={18}
+              value={drawCount}
+              onValueChange={handleDrawCountChange}
+            />
           </Stack>
           <MDDeckButtons colour={colour} deckId={deckId} />
         </Stack>

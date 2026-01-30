@@ -1,6 +1,14 @@
-import { Button, Box, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
+import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
+import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
+import { useDeckDraw } from "../../../hooks/useDeckDraw";
 
 const MDDeckButtons = ({ colour, deckId }) => {
+  const { getCardsToDraw } = useCardsToDraw();
+  const { isLoading } = useMightDeckManager();
+  const { drawFromDeck } = useDeckDraw();
+  const drawCount = getCardsToDraw(deckId);
+
   return (
     <Stack
       direction="column"
@@ -28,8 +36,13 @@ const MDDeckButtons = ({ colour, deckId }) => {
           Crits
         </Button>
       </Stack>
-      <Button variant="contained" sx={{ width: "160px", m: 0 }}>
-        {`Draw XX ${colour}`}
+      <Button
+        variant="contained"
+        sx={{ width: "160px", m: 0 }}
+        disabled={isLoading || drawCount <= 0}
+        onClick={() => drawFromDeck(deckId)}
+      >
+        {`Draw ${drawCount} ${colour}`}
       </Button>
     </Stack>
   );
