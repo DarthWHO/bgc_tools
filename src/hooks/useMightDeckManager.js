@@ -20,6 +20,18 @@ export function useMightDeckManager() {
     return deck ? deck.deck.filter((card) => !card.isDealt) : [];
   };
 
+  const getNextDrawOrder = (deckID) => {
+    if (!data) return 1;
+    const deck = data.find((d) => d.deckID === deckID);
+    if (!deck) return 1;
+
+    const maxDrawOrder = deck.deck.reduce(
+      (max, card) => Math.max(max, card.drawOrder || 0),
+      0,
+    );
+    return maxDrawOrder + 1;
+  };
+
   const dealRandomCard = async (deckID) => {
     if (!data) return null;
 
@@ -31,6 +43,7 @@ export function useMightDeckManager() {
 
     const randomIndex = Math.floor(Math.random() * undealtCards.length);
     const selectedCard = undealtCards[randomIndex];
+    const nextDrawOrder = getNextDrawOrder(deckID);
 
     const updatedData = data.map((deck) => {
       if (deck.deckID === deckID) {
@@ -38,7 +51,12 @@ export function useMightDeckManager() {
           ...deck,
           deck: deck.deck.map((card) =>
             card.cardID === selectedCard.cardID
-              ? { ...card, isDealt: true, isActive: true }
+              ? {
+                  ...card,
+                  isDealt: true,
+                  isActive: true,
+                  drawOrder: nextDrawOrder,
+                }
               : card,
           ),
         };
@@ -53,13 +71,20 @@ export function useMightDeckManager() {
   const dealCard = async (deckID, cardID) => {
     if (!data) return null;
 
+    const nextDrawOrder = getNextDrawOrder(deckID);
+
     const updatedData = data.map((deck) => {
       if (deck.deckID === deckID) {
         return {
           ...deck,
           deck: deck.deck.map((card) =>
             card.cardID === cardID
-              ? { ...card, isDealt: true, isActive: true }
+              ? {
+                  ...card,
+                  isDealt: true,
+                  isActive: true,
+                  drawOrder: nextDrawOrder,
+                }
               : card,
           ),
         };
@@ -73,6 +98,54 @@ export function useMightDeckManager() {
     return deck ? deck.deck.find((c) => c.cardID === cardID) : null;
   };
 
+  const dealMultipleRandomCards = async (deckID, count) => {
+    if (!data) return [];
+
+    const undealtCards = getUndealtCards(deckID);
+    if (undealtCards.length === 0) {
+      console.warn(`No undealt cards available in deck: ${deckID}`);
+      return [];
+    }
+
+    const numCardsToDeal = Math.min(count, undealtCards.length);
+    const selectedCards = [];
+    const availableCards = [...undealtCards];
+
+    // Select random cards
+    for (let i = 0; i < numCardsToDeal; i++) {
+      const randomIndex = Math.floor(Math.random() * availableCards.length);
+      selectedCards.push(availableCards[randomIndex]);
+      availableCards.splice(randomIndex, 1);
+    }
+
+    let nextDrawOrder = getNextDrawOrder(deckID);
+    const selectedCardIDs = selectedCards.map((card) => card.cardID);
+
+    const updatedData = data.map((deck) => {
+      if (deck.deckID === deckID) {
+        return {
+          ...deck,
+          deck: deck.deck.map((card) => {
+            if (selectedCardIDs.includes(card.cardID)) {
+              const cardDrawOrder = nextDrawOrder++;
+              return {
+                ...card,
+                isDealt: true,
+                isActive: true,
+                drawOrder: cardDrawOrder,
+              };
+            }
+            return card;
+          }),
+        };
+      }
+      return deck;
+    });
+
+    await setDataAsync(updatedData);
+    return selectedCards;
+  };
+
   const resetDeck = async (deckID) => {
     if (!data) return;
 
@@ -80,9 +153,6 @@ export function useMightDeckManager() {
       if (deck.deckID === deckID) {
         return {
           ...deck,
-          // deck: deck.deck.map((card) =>
-          //   !card.isActive ? { ...card, isDealt: false } : card,
-          // ),
           deck: deck.deck.map((card) =>
             card.isActive ? { ...card, isDealt: false, isActive: false } : card,
           ),
@@ -94,17 +164,6 @@ export function useMightDeckManager() {
     await setDataAsync(updatedData);
   };
 
-  const resetAllDecks = async () => {
-    if (!data) return;
-
-    const updatedData = data.map((deck) => ({
-      ...deck,
-      deck: deck.deck.map((card) => ({ ...card, isDealt: false })),
-    }));
-
-    await setDataAsync(updatedData);
-  };
-
   const clearActiveCards = async (deckID) => {
     if (!data) return;
 
@@ -112,7 +171,11 @@ export function useMightDeckManager() {
       if (deck.deckID === deckID) {
         return {
           ...deck,
-          deck: deck.deck.map((card) => ({ ...card, isActive: false })),
+          deck: deck.deck.map((card) => ({
+            ...card,
+            isActive: false,
+            drawOrder: card.isActive ? 0 : card.drawOrder,
+          })),
         };
       }
       return deck;
@@ -122,16 +185,34 @@ export function useMightDeckManager() {
   };
 
   const getDeckStats = (deckID) => {
-    if (!data) return { total: 0, dealt: 0, remaining: 0 };
+    if (!data) return { total: 0, dealt: 0, remaining: 0, remainingByType: [] };
 
     const deck = data.find((d) => d.deckID === deckID);
-    if (!deck) return { total: 0, dealt: 0, remaining: 0 };
+    if (!deck) return { total: 0, dealt: 0, remaining: 0, remainingByType: [] };
 
     const total = deck.deck.length;
     const dealt = deck.deck.filter((card) => card.isDealt).length;
     const remaining = total - dealt;
 
-    return { total, dealt, remaining };
+    // Group undealt cards by description and value
+    const undealtCards = deck.deck.filter((card) => !card.isDealt);
+    const groupedCards = {};
+
+    undealtCards.forEach((card) => {
+      const key = `${card.description}-${card.value}`;
+      if (!groupedCards[key]) {
+        groupedCards[key] = {
+          description: card.description,
+          value: card.value,
+          count: 0,
+        };
+      }
+      groupedCards[key].count++;
+    });
+
+    const remainingByType = Object.values(groupedCards);
+
+    return { total, dealt, remaining, remainingByType };
   };
 
   const resetMightDeckDataToInitial = async () => {
@@ -143,11 +224,11 @@ export function useMightDeckManager() {
     isLoading,
     dealRandomCard,
     dealCard,
-    resetDeck,
-    resetAllDecks,
+    dealMultipleRandomCards,
     clearActiveCards,
     getUndealtCards,
     getDeckStats,
+    resetDeck,
     resetMightDeckDataToInitial,
   };
 }

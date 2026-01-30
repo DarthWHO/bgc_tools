@@ -1,10 +1,10 @@
 import { Button, Box, Stack } from "@mui/material";
 
-const MDDeckButtons = ({ colour }) => {
+const MDDeckButtons = ({ colour, deckId }) => {
   return (
     <Stack
       direction="column"
-      spacing={3}
+      spacing={1}
       sx={{
         justifyContent: "flex-end",
         alignItems: "center",

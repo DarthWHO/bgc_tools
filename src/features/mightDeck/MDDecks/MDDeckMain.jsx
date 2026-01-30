@@ -16,19 +16,20 @@ import MDDeckSummary from "./MDDeckSummary";
 import MDDeckButtons from "./MDDeckButtons";
 import MDCardsArea from "./MDCardsArea";
 
-const MDDeckMain = ({ colour }) => {
+const MDDeckMain = ({ colour, deckId }) => {
   return (
     <Card>
       <CardHeader
         title={`${colour.charAt(0).toUpperCase() + colour.slice(1)} Deck`}
+        sx={{ textAlign: "center" }}
       />
       <CardContent>
         <Stack direction="row" spacing={2}>
           <Stack spacing={1} flexGrow={1} sx={{ alignItems: "center", mb: 0 }}>
-            <MDDeckSummary />
+            <MDDeckSummary deckId={deckId} />
             <NumberSpinner min={0} max={18} defaultValue={2} />
           </Stack>
-          <MDDeckButtons colour={colour} />
+          <MDDeckButtons colour={colour} deckId={deckId} />
         </Stack>
       </CardContent>
       <CardActions
@@ -40,7 +41,7 @@ const MDDeckMain = ({ colour }) => {
           alignItems: "center",
         }}
       >
-        <MDCardsArea colour={colour} />
+        <MDCardsArea colour={colour} deckId={deckId} />
       </CardActions>
     </Card>
   );

@@ -3,7 +3,7 @@ import MDCard from "./MDCard";
 
 const HIDE = false;
 
-const MDCardsArea = ({ colour }) => {
+const MDCardsArea = ({ colour, deckId }) => {
   if (HIDE) return null;
   return (
     <Grid
@@ -13,12 +13,12 @@ const MDCardsArea = ({ colour }) => {
       p={0.5}
       sx={{ backgroundColor: "text.disabled" }}
     >
-      <MDCard colour={colour} />
-      <MDCard colour={colour} />
-      <MDCard colour={colour} />
-      <MDCard colour={colour} />
-      <MDCard colour={colour} />
-      <MDCard colour={colour} />
+      <MDCard colour={colour} deckId={deckId} />
+      <MDCard colour={colour} deckId={deckId} />
+      <MDCard colour={colour} deckId={deckId} />
+      <MDCard colour={colour} deckId={deckId} />
+      <MDCard colour={colour} deckId={deckId} />
+      <MDCard colour={colour} deckId={deckId} />
     </Grid>
   );
 };

@@ -10,7 +10,7 @@ const MDSummaryArea = () => {
   if (!decks) return null;
 
   return (
-    <Card container>
+    <Card>
       <Grid container spacing={2} sx={{ m: 2 }}>
         <Grid size={{ xs: 6, md: 8 }}>
           <MDSummaryDetails />

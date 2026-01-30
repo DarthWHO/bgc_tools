@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 const CARDHEIGHT = 70;
 const CIRCLESIZE = 64;
 
-const MDCard = ({ colour }) => {
+const MDCard = ({ colour, deckId }) => {
   if (!colour) return null;
   const displayValue = 1;
   return (
