@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Card, Grid } from "@mui/material";
 
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 
@@ -10,14 +10,16 @@ const MDSummaryArea = () => {
   if (!decks) return null;
 
   return (
-    <Grid container spacing={2} sx={{ mb: 2 }}>
-      <Grid size={{ xs: 6, md: 8 }}>
-        <MDSummaryDetails />
+    <Card container>
+      <Grid container spacing={2} sx={{ m: 2 }}>
+        <Grid size={{ xs: 6, md: 8 }}>
+          <MDSummaryDetails />
+        </Grid>
+        <Grid size={{ xs: 6, md: 4 }}>
+          <MDSummaryButtons />
+        </Grid>
       </Grid>
-      <Grid size={{ xs: 6, md: 4 }}>
-        <MDSummaryButtons />
-      </Grid>
-    </Grid>
+    </Card>
   );
 };
 
