@@ -11,7 +11,7 @@ const MDSummaryArea = () => {
 
   return (
     <Card>
-      <Grid container spacing={2} sx={{ m: 2 }}>
+      <Grid container spacing={1} sx={{ m: 2 }}>
         <Grid size={{ xs: 6, md: 8 }}>
           <MDSummaryDetails />
         </Grid>

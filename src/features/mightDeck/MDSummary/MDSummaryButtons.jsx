@@ -4,6 +4,8 @@ import { useAppData } from "../../../hooks/useAppData";
 import { useDeckDraw } from "../../../hooks/useDeckDraw";
 import { getAllDeckIds } from "../../../utils/deckConstants";
 
+const buttonWidth = "155px";
+
 const MDSummaryButtons = () => {
   const { decks, isLoading, getDeckStats } = useMightDeckManager();
   const { setOathswornActive, getOathswornActive } = useAppData();
@@ -22,7 +24,7 @@ const MDSummaryButtons = () => {
     <Stack
       direction="column"
       spacing={1}
-      mr={5}
+      mr={1}
       sx={{
         justifyContent: "center",
         alignItems: "flex-end",
@@ -31,7 +33,7 @@ const MDSummaryButtons = () => {
       <Button
         variant="contained"
         disabled={isDrawAllDisabled}
-        sx={{ width: "170px" }}
+        sx={{ width: buttonWidth }}
         onClick={() => drawFromMultipleDecks(deckIds)}
       >
         Draw All
@@ -39,7 +41,7 @@ const MDSummaryButtons = () => {
       <Button
         variant="outlined"
         disabled={false}
-        sx={{ width: "170px" }}
+        sx={{ width: buttonWidth }}
         onClick={() => setOathswornActive()}
       >
         Switch
@@ -47,7 +49,7 @@ const MDSummaryButtons = () => {
       <Button
         variant="outlined"
         disabled={false}
-        sx={{ width: "170px" }}
+        sx={{ width: buttonWidth }}
         onClick={() => null}
       >
         End Draw

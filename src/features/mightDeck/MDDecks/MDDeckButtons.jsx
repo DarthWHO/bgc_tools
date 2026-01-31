@@ -3,6 +3,8 @@ import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 import { useDeckDraw } from "../../../hooks/useDeckDraw";
 
+const buttonWidth = "155px";
+
 const MDDeckButtons = ({ colour, deckId }) => {
   const { getCardsToDraw } = useCardsToDraw();
   const { isLoading } = useMightDeckManager();
@@ -18,27 +20,27 @@ const MDDeckButtons = ({ colour, deckId }) => {
         alignItems: "center",
         m: 0,
         p: 0,
-        pb: 1,
+        pb: 0,
       }}
     >
       <Stack spacing={1}>
-        <Button variant="outlined" sx={{ width: "160px", m: 0 }}>
+        <Button variant="outlined" sx={{ width: buttonWidth, m: 0 }}>
           Shuffle
         </Button>
-        <Button variant="outlined" sx={{ width: "160px", m: 0 }}>
+        <Button variant="outlined" sx={{ width: buttonWidth, m: 0 }}>
           Re-Draw
         </Button>
         <Button
           variant="outlined"
           disabled={true}
-          sx={{ width: "160px", m: 0 }}
+          sx={{ width: buttonWidth, m: 0 }}
         >
           Crits
         </Button>
       </Stack>
       <Button
         variant="contained"
-        sx={{ width: "160px", m: 0 }}
+        sx={{ width: buttonWidth, m: 0 }}
         disabled={isLoading || drawCount <= 0}
         onClick={() => drawFromDeck(deckId)}
       >

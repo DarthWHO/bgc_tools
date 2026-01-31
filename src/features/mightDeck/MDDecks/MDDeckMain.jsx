@@ -25,9 +25,9 @@ const MDDeckMain = ({ colour, deckId }) => {
     <Card>
       <CardHeader
         title={`${colour.charAt(0).toUpperCase() + colour.slice(1)} Deck`}
-        sx={{ textAlign: "center" }}
+        sx={{ textAlign: "center", p: 0.5, m: 0 }}
       />
-      <CardContent>
+      <CardContent sx={{ p: 1, pt: 0 }}>
         <Stack direction="row" spacing={2}>
           <Stack spacing={1} flexGrow={1} sx={{ alignItems: "center", mb: 0 }}>
             <MDDeckSummary deckId={deckId} />
@@ -35,6 +35,7 @@ const MDDeckMain = ({ colour, deckId }) => {
               min={0}
               max={18}
               value={drawCount}
+              size="small"
               onValueChange={handleDrawCountChange}
             />
           </Stack>

@@ -12,7 +12,7 @@ const MDDecksArea = () => {
         <Grid key={colour} size={{ xs: 12, md: 6, lg: 3 }}>
           <MDDeckMain
             colour={colour}
-            deckId={`${isOathSwornActive ? "o" : "e"}${colour}`}
+            deckId={`${isOathSwornActive() ? "o" : "e"}${colour}`}
           />
         </Grid>
       ))}
