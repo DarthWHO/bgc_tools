@@ -6,8 +6,13 @@ const buttonWidth = "155px";
 
 const MDDeckButtons = ({ colour, deckId }) => {
   const { getCardsToDraw, setCardsToDraw } = useCardsToDraw();
-  const { isLoading, shuffleDeck, dealMultipleRandomCards } =
-    useMightDeckManager();
+  const {
+    isLoading,
+    shuffleDeck,
+    dealMultipleRandomCards,
+    redrawSelectedCards,
+    getSelectedNonCritCardCount,
+  } = useMightDeckManager();
 
   const drawCount = getCardsToDraw(deckId);
 
@@ -16,6 +21,10 @@ const MDDeckButtons = ({ colour, deckId }) => {
   const handleDraw = () => {
     dealMultipleRandomCards(deckId, drawCount);
     setCardsToDraw(deckId, 0);
+  };
+
+  const handleRedraw = () => {
+    redrawSelectedCards(deckId);
   };
 
   return (
@@ -41,7 +50,8 @@ const MDDeckButtons = ({ colour, deckId }) => {
         <Button
           variant="outlined"
           sx={{ width: buttonWidth, m: 0 }}
-          disabled={true}
+          disabled={getSelectedNonCritCardCount(deckId) === 0}
+          onClick={handleRedraw}
         >
           Re-Draw
         </Button>

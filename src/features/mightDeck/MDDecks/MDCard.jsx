@@ -52,8 +52,8 @@ const MDCard = ({ colour, card }) => {
             : "0px 0px",
           bgcolor: colour,
           "&:hover": {
-            transition: "0.3s",
             boxShadow: "3px 5px rgba(30, 30, 30, 0.3)",
+            transition: "0.3s",
           },
         }}
       >
