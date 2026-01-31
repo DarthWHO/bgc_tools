@@ -8,6 +8,18 @@ const MDCard = ({ colour, card }) => {
   const { toggleCardSelection } = useMightDeckManager();
   if (!colour) return null;
 
+  if (colour === "yellow") {
+    colour = "#FAD229";
+  }
+
+  if (colour === "red") {
+    colour = "#F02623";
+  }
+
+  if (colour === "black") {
+    colour = "#303030";
+  }
+
   const toggleSelected = () => {
     toggleCardSelection(card.cardID);
   };
@@ -28,11 +40,21 @@ const MDCard = ({ colour, card }) => {
           p: 2,
           height: CARDHEIGHT,
           borderRadius: 2,
-          border: card.isSelected ? "1px solid" : "0px",
-          borderColor: card.isSelected ? "green" : "grey",
-          transition: "boxShadow 1s",
-          boxShadow: card.isSelected ? "2px 4px rgba(0, 0, 0, 0.3)" : "0px 0px",
+          border: card.isSelected ? "3px solid" : "0px",
+          borderColor: card.isSelected
+            ? colour === "white"
+              ? "#303030"
+              : "white"
+            : "grey",
+          transition: "0.3s",
+          boxShadow: card.isSelected
+            ? "3px 5px rgba(30, 30, 30, 0.3)"
+            : "0px 0px",
           bgcolor: colour,
+          "&:hover": {
+            transition: "0.3s",
+            boxShadow: "3px 5px rgba(30, 30, 30, 0.3)",
+          },
         }}
       >
         <Box
