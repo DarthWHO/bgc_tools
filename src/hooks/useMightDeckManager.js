@@ -14,90 +14,46 @@ export function useMightDeckManager() {
     }
   }, [data, setDataAsync]);
 
-  const getInactiveCardCount = (deckID) => {
-    if (!data) return 0;
-    const deck = data.find((d) => d.deckID === deckID);
-    return deck ? deck.deck.filter((card) => !card.isActive).length : 0;
+  // Helper: Find a deck by ID
+  const findDeck = (deckID, dataSource = data) => {
+    return dataSource?.find((d) => d.deckID === deckID);
   };
 
-  const getUndealtCards = (deckID) => {
-    if (!data) return [];
-    const deck = data.find((d) => d.deckID === deckID);
-    return deck ? deck.deck.filter((card) => !card.isDealt) : [];
+  // Helper: Get the maximum draw order for a deck
+  const getMaxDrawOrder = (deck) => {
+    return deck.deck.reduce(
+      (max, card) => Math.max(max, card.drawOrder || 0),
+      0,
+    );
   };
 
-  const dealMultipleRandomCards = async (deckID, count) => {
-    if (!data) return [];
+  // Helper: Reset card to undealt state
+  const resetCard = (card) => ({
+    ...card,
+    isDealt: false,
+    drawOrder: 0,
+    isSelected: false,
+    isRedrawn: false,
+    isCritMissNegated: false,
+    isCritAlreadyDrawn: false,
+  });
 
-    const deck = data.find((d) => d.deckID === deckID);
-    if (!deck) return [];
-
-    let currentUndealtCards = deck.deck.filter((card) => !card.isDealt);
-    const dealtCards = [];
-    const cardsToDeal = [];
-    let currentData = data;
-    let cardsDealtSoFar = 0;
-
-    // Select all cards first
-    for (let i = 0; i < count; i++) {
-      // If we've run out of undealt cards, shuffle the deck
-      if (currentUndealtCards.length === 0) {
-        // Shuffle deck - reset all non-active cards
-        currentData = currentData.map((d) => {
-          if (d.deckID === deckID) {
-            return {
-              ...d,
-              deck: d.deck.map((card) =>
-                card.isActive
-                  ? card
-                  : {
-                      ...card,
-                      isDealt: false,
-                      drawOrder: 0,
-                      isSelected: false,
-                      isRedrawn: false,
-                      isCritMissNegated: false,
-                      isCritAlreadyDrawn: false,
-                    },
-              ),
-            };
-          }
-          return d;
-        });
-
-        // Update undealt cards list after shuffle
-        const updatedDeck = currentData.find((d) => d.deckID === deckID);
-        currentUndealtCards = updatedDeck.deck.filter((card) => !card.isDealt);
+  // Helper: Shuffle a specific deck (returns updated data, doesn't persist)
+  const shuffleDeckInMemory = (currentData, deckID) => {
+    return currentData.map((d) => {
+      if (d.deckID === deckID) {
+        return {
+          ...d,
+          deck: d.deck.map((card) => (card.isActive ? card : resetCard(card))),
+        };
       }
+      return d;
+    });
+  };
 
-      if (currentUndealtCards.length > 0) {
-        const randomIndex = Math.floor(
-          Math.random() * currentUndealtCards.length,
-        );
-        const selectedCard = currentUndealtCards[randomIndex];
-        const nextDrawOrder =
-          currentData
-            .find((d) => d.deckID === deckID)
-            .deck.reduce((max, card) => Math.max(max, card.drawOrder || 0), 0) +
-          cardsDealtSoFar +
-          1;
-
-        cardsToDeal.push({
-          cardID: selectedCard.cardID,
-          drawOrder: nextDrawOrder,
-        });
-        dealtCards.push(selectedCard);
-        cardsDealtSoFar++;
-
-        // Remove from undealt list so we don't pick it again
-        currentUndealtCards = currentUndealtCards.filter(
-          (card) => card.cardID !== selectedCard.cardID,
-        );
-      }
-    }
-
-    // Update state once with all cards
-    const updatedData = currentData.map((d) => {
+  // Helper: Update deck with dealt cards
+  const updateDeckWithDealtCards = (currentData, deckID, cardsToDeal) => {
+    return currentData.map((d) => {
       if (d.deckID === deckID) {
         return {
           ...d,
@@ -118,7 +74,70 @@ export function useMightDeckManager() {
       }
       return d;
     });
+  };
 
+  // Helper: Deal cards from a single deck with auto-shuffle
+  const dealCardsFromDeck = (currentData, deckID, count) => {
+    const deck = findDeck(deckID, currentData);
+    if (!deck) return { updatedData: currentData, dealtCards: [] };
+
+    let workingData = currentData;
+    let currentUndealtCards = deck.deck.filter((card) => !card.isDealt);
+    const dealtCards = [];
+    const cardsToDeal = [];
+    let cardsDealtSoFar = 0;
+
+    for (let i = 0; i < count; i++) {
+      // Shuffle if out of cards
+      if (currentUndealtCards.length === 0) {
+        workingData = shuffleDeckInMemory(workingData, deckID);
+        const updatedDeck = findDeck(deckID, workingData);
+        currentUndealtCards = updatedDeck.deck.filter((card) => !card.isDealt);
+      }
+
+      if (currentUndealtCards.length > 0) {
+        const randomIndex = Math.floor(
+          Math.random() * currentUndealtCards.length,
+        );
+        const selectedCard = currentUndealtCards[randomIndex];
+        const currentDeck = findDeck(deckID, workingData);
+        const nextDrawOrder =
+          getMaxDrawOrder(currentDeck) + cardsDealtSoFar + 1;
+
+        cardsToDeal.push({
+          cardID: selectedCard.cardID,
+          drawOrder: nextDrawOrder,
+        });
+        dealtCards.push(selectedCard);
+        cardsDealtSoFar++;
+
+        currentUndealtCards = currentUndealtCards.filter(
+          (card) => card.cardID !== selectedCard.cardID,
+        );
+      }
+    }
+
+    const updatedData = updateDeckWithDealtCards(
+      workingData,
+      deckID,
+      cardsToDeal,
+    );
+    return { updatedData, dealtCards };
+  };
+
+  const getInactiveCardCount = (deckID) => {
+    const deck = findDeck(deckID);
+    return deck ? deck.deck.filter((card) => !card.isActive).length : 0;
+  };
+
+  const getUndealtCards = (deckID) => {
+    const deck = findDeck(deckID);
+    return deck ? deck.deck.filter((card) => !card.isDealt) : [];
+  };
+
+  const dealMultipleRandomCards = async (deckID, count) => {
+    if (!data) return [];
+    const { updatedData, dealtCards } = dealCardsFromDeck(data, deckID, count);
     await setDataAsync(updatedData);
     return dealtCards;
   };
@@ -126,176 +145,74 @@ export function useMightDeckManager() {
   const dealFromMultipleDecks = async (decksWithCounts) => {
     if (!data) return;
 
-    // Build all card selections and updates in memory first
-    const allUpdates = {};
     let currentData = data;
+    const allUpdates = {};
 
     for (const { deckID, count } of decksWithCounts) {
-      const deck = currentData.find((d) => d.deckID === deckID);
-      if (!deck) continue;
+      const { updatedData, dealtCards } = dealCardsFromDeck(
+        currentData,
+        deckID,
+        count,
+      );
+      currentData = updatedData;
 
-      let currentUndealtCards = deck.deck.filter((card) => !card.isDealt);
-      const cardsToDeal = [];
-      let cardsDealtSoFar = 0;
-
-      for (let i = 0; i < count; i++) {
-        // If we've run out of undealt cards, shuffle the deck
-        if (currentUndealtCards.length === 0) {
-          // Shuffle deck - reset all non-active cards
-          currentData = currentData.map((d) => {
-            if (d.deckID === deckID) {
-              return {
-                ...d,
-                deck: d.deck.map((card) =>
-                  card.isActive
-                    ? card
-                    : {
-                        ...card,
-                        isDealt: false,
-                        drawOrder: 0,
-                        isSelected: false,
-                        isRedrawn: false,
-                        isCritMissNegated: false,
-                        isCritAlreadyDrawn: false,
-                      },
-                ),
-              };
-            }
-            return d;
-          });
-
-          // Update undealt cards list after shuffle
-          const updatedDeck = currentData.find((d) => d.deckID === deckID);
-          currentUndealtCards = updatedDeck.deck.filter(
-            (card) => !card.isDealt,
-          );
-        }
-
-        if (currentUndealtCards.length > 0) {
-          const randomIndex = Math.floor(
-            Math.random() * currentUndealtCards.length,
-          );
-          const selectedCard = currentUndealtCards[randomIndex];
-          const nextDrawOrder =
-            currentData
-              .find((d) => d.deckID === deckID)
-              .deck.reduce(
-                (max, card) => Math.max(max, card.drawOrder || 0),
-                0,
-              ) +
-            cardsDealtSoFar +
-            1;
-
-          cardsToDeal.push({
-            cardID: selectedCard.cardID,
-            drawOrder: nextDrawOrder,
-          });
-          cardsDealtSoFar++;
-
-          currentUndealtCards = currentUndealtCards.filter(
-            (card) => card.cardID !== selectedCard.cardID,
-          );
-        }
+      const deck = findDeck(deckID, updatedData);
+      if (deck) {
+        allUpdates[deckID] = dealtCards.map((card) => {
+          const updatedCard = deck.deck.find((c) => c.cardID === card.cardID);
+          return {
+            cardID: card.cardID,
+            drawOrder: updatedCard.drawOrder,
+          };
+        });
       }
-
-      allUpdates[deckID] = cardsToDeal;
     }
 
-    // Apply all updates in one state change
-    const updatedData = currentData.map((d) => {
-      const cardsToDeal = allUpdates[d.deckID];
-      if (!cardsToDeal) return d;
-
-      return {
-        ...d,
-        deck: d.deck.map((card) => {
-          const cardUpdate = cardsToDeal.find((c) => c.cardID === card.cardID);
-          return cardUpdate
-            ? {
-                ...card,
-                isDealt: true,
-                isActive: true,
-                drawOrder: cardUpdate.drawOrder,
-              }
-            : card;
-        }),
-      };
-    });
-
-    await setDataAsync(updatedData);
+    await setDataAsync(currentData);
   };
 
   const endDraw = async (isOathsworn) => {
     if (!data) return;
 
-    const updatedData = data.map((deck) => {
-      if (deck.isOathsworn === isOathsworn) {
-        return {
-          ...deck,
-          deck: deck.deck.map((card) => ({
-            ...card,
-            isActive: false,
-          })),
-        };
-      }
-      return deck;
-    });
+    const updatedData = data.map((deck) =>
+      deck.isOathsworn === isOathsworn
+        ? {
+            ...deck,
+            deck: deck.deck.map((card) => ({ ...card, isActive: false })),
+          }
+        : deck,
+    );
 
     await setDataAsync(updatedData);
   };
 
   const shuffleDeck = async (deckID) => {
     if (!data) return;
-
-    const updatedData = data.map((deck) => {
-      if (deck.deckID === deckID) {
-        return {
-          ...deck,
-          deck: deck.deck.map((card) =>
-            card.isActive
-              ? card
-              : {
-                  ...card,
-                  isDealt: false,
-                  drawOrder: 0,
-                  isSelected: false,
-                  isRedrawn: false,
-                  isCritMissNegated: false,
-                  isCritAlreadyDrawn: false,
-                },
-          ),
-        };
-      }
-      return deck;
-    });
-
+    const updatedData = shuffleDeckInMemory(data, deckID);
     await setDataAsync(updatedData);
   };
 
   const clearActiveCards = async (deckID) => {
     if (!data) return;
 
-    const updatedData = data.map((deck) => {
-      if (deck.deckID === deckID) {
-        return {
-          ...deck,
-          deck: deck.deck.map((card) => ({
-            ...card,
-            isActive: false,
-            drawOrder: card.isActive ? 0 : card.drawOrder,
-          })),
-        };
-      }
-      return deck;
-    });
+    const updatedData = data.map((deck) =>
+      deck.deckID === deckID
+        ? {
+            ...deck,
+            deck: deck.deck.map((card) => ({
+              ...card,
+              isActive: false,
+              drawOrder: card.isActive ? 0 : card.drawOrder,
+            })),
+          }
+        : deck,
+    );
 
     await setDataAsync(updatedData);
   };
 
   const getDeckStats = (deckID) => {
-    if (!data) return { total: 0, dealt: 0, remaining: 0, remainingByType: [] };
-
-    const deck = data.find((d) => d.deckID === deckID);
+    const deck = findDeck(deckID);
     if (!deck) return { total: 0, dealt: 0, remaining: 0, remainingByType: [] };
 
     const total = deck.deck.length;
@@ -304,19 +221,18 @@ export function useMightDeckManager() {
 
     // Group undealt cards by description and value
     const undealtCards = deck.deck.filter((card) => !card.isDealt);
-    const groupedCards = {};
-
-    undealtCards.forEach((card) => {
+    const groupedCards = undealtCards.reduce((acc, card) => {
       const key = `${card.description}-${card.value}`;
-      if (!groupedCards[key]) {
-        groupedCards[key] = {
+      if (!acc[key]) {
+        acc[key] = {
           description: card.description,
           value: card.value,
           count: 0,
         };
       }
-      groupedCards[key].count++;
-    });
+      acc[key].count++;
+      return acc;
+    }, {});
 
     const remainingByType = Object.values(groupedCards);
 
@@ -324,8 +240,7 @@ export function useMightDeckManager() {
   };
 
   const getActiveCards = (deckID) => {
-    if (!data) return [];
-    const deck = data.find((d) => d.deckID === deckID);
+    const deck = findDeck(deckID);
     return deck ? deck.deck.filter((card) => card.isActive) : [];
   };
 
