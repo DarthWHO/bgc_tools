@@ -264,7 +264,7 @@ export function useMightDeckManager() {
     await setDataAsync(updatedData);
   };
 
-  const redrawSelectedCards = async (deckID) => {
+  const redrawSelectedNonCritCards = async (deckID) => {
     if (!data) return;
 
     const deck = findDeck(deckID);
@@ -276,12 +276,9 @@ export function useMightDeckManager() {
 
     let currentData = data;
 
-    // Process each selected card
     for (const card of selectedCards) {
-      // Skip crit cards
-      if (card.description === "Crit") continue;
+      if (card.isCrit) continue;
 
-      // Mark the card as redrawn
       currentData = currentData.map((d) => {
         if (d.deckID === deckID) {
           return {
@@ -296,7 +293,48 @@ export function useMightDeckManager() {
         return d;
       });
 
-      // Draw a new card of the same color (description)
+      const { updatedData } = dealCardsFromDeck(currentData, deckID, 1);
+      currentData = updatedData;
+    }
+
+    await setDataAsync(currentData);
+  };
+
+  const redrawSelectedCritCards = async (deckID) => {
+    if (!data) return;
+
+    const deck = findDeck(deckID);
+    if (!deck) return;
+
+    const selectedCards = deck.deck.filter(
+      (card) => card.isSelected && card.isActive,
+    );
+
+    let currentData = data;
+
+    for (const card of selectedCards) {
+      if (!card.isCrit) continue;
+
+      currentData = currentData.map((d) => {
+        if (d.deckID === deckID) {
+          return {
+            ...d,
+            deck: d.deck.map((c) =>
+              c.cardID === card.cardID
+                ? {
+                    ...c,
+                    isRedrawn: true,
+                    isSelected: false,
+                    isCritAlreadyDrawn: true,
+                    isCritMissNegated: true,
+                  }
+                : c,
+            ),
+          };
+        }
+        return d;
+      });
+
       const { updatedData } = dealCardsFromDeck(currentData, deckID, 1);
       currentData = updatedData;
     }
@@ -316,12 +354,21 @@ export function useMightDeckManager() {
     ).length;
   };
 
+  const getSelectedCritCardCount = (deckID) => {
+    const deck = findDeck(deckID);
+    if (!deck) return 0;
+    return deck.deck.filter(
+      (card) => card.isSelected && card.isActive && card.isCrit,
+    ).length;
+  };
+
   return {
     decks: data,
     isLoading,
     dealMultipleRandomCards,
     dealFromMultipleDecks,
-    redrawSelectedCards,
+    redrawSelectedNonCritCards,
+    redrawSelectedCritCards,
     toggleCardSelection,
     getActiveCards,
     getInactiveCardCount,
@@ -329,6 +376,7 @@ export function useMightDeckManager() {
     getUndealtCards,
     getDeckStats,
     getSelectedNonCritCardCount,
+    getSelectedCritCardCount,
     shuffleDeck,
     resetMightDeckDataToInitial,
     endDraw,

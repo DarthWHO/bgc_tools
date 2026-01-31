@@ -10,8 +10,10 @@ const MDDeckButtons = ({ colour, deckId }) => {
     isLoading,
     shuffleDeck,
     dealMultipleRandomCards,
-    redrawSelectedCards,
+    redrawSelectedNonCritCards,
+    redrawSelectedCritCards,
     getSelectedNonCritCardCount,
+    getSelectedCritCardCount,
   } = useMightDeckManager();
 
   const drawCount = getCardsToDraw(deckId);
@@ -23,8 +25,12 @@ const MDDeckButtons = ({ colour, deckId }) => {
     setCardsToDraw(deckId, 0);
   };
 
-  const handleRedraw = () => {
-    redrawSelectedCards(deckId);
+  const handleNonCritRedraw = () => {
+    redrawSelectedNonCritCards(deckId);
+  };
+
+  const handleCritRedraw = () => {
+    redrawSelectedCritCards(deckId);
   };
 
   return (
@@ -51,16 +57,17 @@ const MDDeckButtons = ({ colour, deckId }) => {
           variant="outlined"
           sx={{ width: buttonWidth, m: 0 }}
           disabled={getSelectedNonCritCardCount(deckId) === 0}
-          onClick={handleRedraw}
+          onClick={handleNonCritRedraw}
         >
-          Re-Draw
+          {`Re-Draw (${getSelectedNonCritCardCount(deckId)})`}
         </Button>
         <Button
           variant="outlined"
-          disabled={true}
+          disabled={getSelectedCritCardCount(deckId) === 0}
           sx={{ width: buttonWidth, m: 0 }}
+          onClick={handleCritRedraw}
         >
-          Crits
+          {`Crits (${getSelectedCritCardCount(deckId)})`}
         </Button>
       </Stack>
       <Button
