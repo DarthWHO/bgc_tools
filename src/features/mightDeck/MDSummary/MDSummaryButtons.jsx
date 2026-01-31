@@ -1,29 +1,39 @@
 import { Button, Stack } from "@mui/material";
+import toast from "react-hot-toast";
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 import { useAppData } from "../../../hooks/useAppData";
-import { useDeckDraw } from "../../../hooks/useDeckDraw";
 import { getAllDeckIds } from "../../../utils/deckConstants";
 import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
 
 const buttonWidth = "155px";
 
 const MDSummaryButtons = () => {
-  const { decks, isLoading, getDeckStats, endDraw } = useMightDeckManager();
+  const { decks, isLoading, endDraw, dealFromMultipleDecks } =
+    useMightDeckManager();
   const { setOathswornActive, getOathswornActive } = useAppData();
-  const { drawFromMultipleDecks } = useDeckDraw();
-  const { getCardCountByPrefix } = useCardsToDraw();
+  const { getCardCountByPrefix, resetMultipleDecks } = useCardsToDraw();
   const prefix = getOathswornActive() ? "o" : "e";
   const totalCardsToDraw = getCardCountByPrefix(prefix);
 
   if (!decks) return null;
 
   const deckIds = getAllDeckIds(getOathswornActive());
-  const allDecksEmpty = deckIds.every(
-    (deckId) => getDeckStats(deckId).remaining === 0,
-  );
 
-  const isDrawAllDisabled =
-    allDecksEmpty || isLoading || totalCardsToDraw === 0;
+  const handleDrawAll = async () => {
+    const decksWithCounts = deckIds
+      .map((deckId) => ({
+        deckID: deckId,
+        count: getCardCountByPrefix(deckId),
+      }))
+      .filter((d) => d.count > 0);
+
+    if (decksWithCounts.length > 0) {
+      await dealFromMultipleDecks(decksWithCounts);
+      resetMultipleDecks(deckIds);
+    }
+  };
+
+  const isDrawAllDisabled = isLoading || totalCardsToDraw === 0;
 
   return (
     <Stack
@@ -39,7 +49,7 @@ const MDSummaryButtons = () => {
         variant="contained"
         disabled={isDrawAllDisabled}
         sx={{ width: buttonWidth }}
-        onClick={() => drawFromMultipleDecks(deckIds)}
+        onClick={handleDrawAll}
       >
         {`Draw ${totalCardsToDraw === 0 ? "" : totalCardsToDraw} Cards`}
       </Button>
@@ -47,7 +57,12 @@ const MDSummaryButtons = () => {
         variant="outlined"
         disabled={false}
         sx={{ width: buttonWidth }}
-        onClick={() => setOathswornActive()}
+        onClick={() => {
+          toast.success(
+            `Switched to ${getOathswornActive() ? "Enemy" : "Oathsworn"} Decks`,
+          );
+          setOathswornActive();
+        }}
       >
         Switch
       </Button>

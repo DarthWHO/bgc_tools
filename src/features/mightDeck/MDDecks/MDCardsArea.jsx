@@ -10,6 +10,10 @@ const MDCardsArea = ({ colour, deckId }) => {
 
   if (activeCards.length === 0) return null;
 
+  const sortedCards = [...activeCards].sort(
+    (a, b) => a.drawOrder - b.drawOrder,
+  );
+
   if (HIDE) return null;
   return (
     <Grid
@@ -19,7 +23,7 @@ const MDCardsArea = ({ colour, deckId }) => {
       p={0.5}
       sx={{ backgroundColor: "text.disabled", width: "100%" }}
     >
-      {activeCards.map((card) => (
+      {sortedCards.map((card) => (
         <MDCard key={card.cardID} colour={colour} card={card} />
       ))}
     </Grid>

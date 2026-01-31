@@ -1,7 +1,6 @@
 import { useLocalStorage } from "./useLocalStorage";
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import initialData from "../data/startDecks.json";
-import { getFromLocalStorage } from "../utils/localStorage";
 
 export function useMightDeckManager() {
   const { data, isLoading, setDataAsync } = useLocalStorage(
@@ -21,143 +20,128 @@ export function useMightDeckManager() {
     return deck ? deck.deck.filter((card) => !card.isDealt) : [];
   };
 
-  const getNextDrawOrder = (deckID) => {
-    if (!data) return 1;
+  const dealMultipleRandomCards = async (deckID, count) => {
+    if (!data) return [];
+
     const deck = data.find((d) => d.deckID === deckID);
-    if (!deck) return 1;
+    if (!deck) return [];
 
-    const maxDrawOrder = deck.deck.reduce(
-      (max, card) => Math.max(max, card.drawOrder || 0),
-      0,
-    );
-    return maxDrawOrder + 1;
-  };
+    let currentUndealtCards = deck.deck.filter((card) => !card.isDealt);
+    const dealtCards = [];
+    const cardsToDeal = [];
 
-  const dealRandomCard = async (deckID) => {
-    if (!data) return null;
+    // Select all cards first
+    for (let i = 0; i < count && currentUndealtCards.length > 0; i++) {
+      const randomIndex = Math.floor(
+        Math.random() * currentUndealtCards.length,
+      );
+      const selectedCard = currentUndealtCards[randomIndex];
+      const nextDrawOrder =
+        deck.deck.reduce((max, card) => Math.max(max, card.drawOrder || 0), 0) +
+        i +
+        1;
 
-    const undealtCards = getUndealtCards(deckID);
-    if (undealtCards.length === 0) {
-      console.warn(`No undealt cards available in deck: ${deckID}`);
-      return null;
+      cardsToDeal.push({
+        cardID: selectedCard.cardID,
+        drawOrder: nextDrawOrder,
+      });
+      dealtCards.push(selectedCard);
+
+      // Remove from undealt list so we don't pick it again
+      currentUndealtCards = currentUndealtCards.filter(
+        (card) => card.cardID !== selectedCard.cardID,
+      );
     }
 
-    const randomIndex = Math.floor(Math.random() * undealtCards.length);
-    const selectedCard = undealtCards[randomIndex];
-    const nextDrawOrder = getNextDrawOrder(deckID);
-
-    const updatedData = data.map((deck) => {
-      if (deck.deckID === deckID) {
+    // Update state once with all cards
+    const updatedData = data.map((d) => {
+      if (d.deckID === deckID) {
         return {
-          ...deck,
-          deck: deck.deck.map((card) =>
-            card.cardID === selectedCard.cardID
+          ...d,
+          deck: d.deck.map((card) => {
+            const cardUpdate = cardsToDeal.find(
+              (c) => c.cardID === card.cardID,
+            );
+            return cardUpdate
               ? {
                   ...card,
                   isDealt: true,
                   isActive: true,
-                  drawOrder: nextDrawOrder,
+                  drawOrder: cardUpdate.drawOrder,
                 }
-              : card,
-          ),
+              : card;
+          }),
         };
       }
-      return deck;
+      return d;
     });
 
     await setDataAsync(updatedData);
-    return selectedCard;
+    return dealtCards;
   };
 
-  const dealCard = async (deckID, cardID) => {
-    if (!data) return null;
+  const dealFromMultipleDecks = async (decksWithCounts) => {
+    if (!data) return;
 
-    const nextDrawOrder = getNextDrawOrder(deckID);
+    // Build all card selections and updates in memory first
+    const allUpdates = {};
 
-    const updatedData = data.map((deck) => {
-      if (deck.deckID === deckID) {
-        return {
-          ...deck,
-          deck: deck.deck.map((card) =>
-            card.cardID === cardID
-              ? {
-                  ...card,
-                  isDealt: true,
-                  isActive: true,
-                  drawOrder: nextDrawOrder,
-                }
-              : card,
-          ),
-        };
-      }
-      return deck;
-    });
+    for (const { deckID, count } of decksWithCounts) {
+      const deck = data.find((d) => d.deckID === deckID);
+      if (!deck) continue;
 
-    await setDataAsync(updatedData);
+      let currentUndealtCards = deck.deck.filter((card) => !card.isDealt);
+      const cardsToDeal = [];
 
-    const deck = data.find((d) => d.deckID === deckID);
-    return deck ? deck.deck.find((c) => c.cardID === cardID) : null;
-  };
+      for (let i = 0; i < count && currentUndealtCards.length > 0; i++) {
+        const randomIndex = Math.floor(
+          Math.random() * currentUndealtCards.length,
+        );
+        const selectedCard = currentUndealtCards[randomIndex];
+        const nextDrawOrder =
+          deck.deck.reduce(
+            (max, card) => Math.max(max, card.drawOrder || 0),
+            0,
+          ) +
+          i +
+          1;
 
-  const dealMultipleRandomCards = useCallback(
-    async (deckID, count) => {
-      // Read fresh data from localStorage to avoid stale closures
-      const currentData = await getFromLocalStorage("oathswornDeckData", null);
-      if (!currentData) return [];
+        cardsToDeal.push({
+          cardID: selectedCard.cardID,
+          drawOrder: nextDrawOrder,
+        });
 
-      const deck = currentData.find((d) => d.deckID === deckID);
-      if (!deck) return [];
-
-      const undealtCards = deck.deck.filter((card) => !card.isDealt);
-      if (undealtCards.length === 0) {
-        console.warn(`No undealt cards available in deck: ${deckID}`);
-        return [];
+        currentUndealtCards = currentUndealtCards.filter(
+          (card) => card.cardID !== selectedCard.cardID,
+        );
       }
 
-      const numCardsToDeal = Math.min(count, undealtCards.length);
-      const selectedCards = [];
-      const availableCards = [...undealtCards];
+      allUpdates[deckID] = cardsToDeal;
+    }
 
-      // Select random cards
-      for (let i = 0; i < numCardsToDeal; i++) {
-        const randomIndex = Math.floor(Math.random() * availableCards.length);
-        selectedCards.push(availableCards[randomIndex]);
-        availableCards.splice(randomIndex, 1);
-      }
+    // Apply all updates in one state change
+    const updatedData = data.map((d) => {
+      const cardsToDeal = allUpdates[d.deckID];
+      if (!cardsToDeal) return d;
 
-      const maxDrawOrder = deck.deck.reduce(
-        (max, card) => Math.max(max, card.drawOrder || 0),
-        0,
-      );
-      let nextDrawOrder = maxDrawOrder + 1;
-      const selectedCardIDs = selectedCards.map((card) => card.cardID);
-
-      const updatedData = currentData.map((d) => {
-        if (d.deckID === deckID) {
-          return {
-            ...d,
-            deck: d.deck.map((card) => {
-              if (selectedCardIDs.includes(card.cardID)) {
-                const cardDrawOrder = nextDrawOrder++;
-                return {
-                  ...card,
-                  isDealt: true,
-                  isActive: true,
-                  drawOrder: cardDrawOrder,
-                };
+      return {
+        ...d,
+        deck: d.deck.map((card) => {
+          const cardUpdate = cardsToDeal.find((c) => c.cardID === card.cardID);
+          return cardUpdate
+            ? {
+                ...card,
+                isDealt: true,
+                isActive: true,
+                drawOrder: cardUpdate.drawOrder,
               }
-              return card;
-            }),
-          };
-        }
-        return d;
-      });
+            : card;
+        }),
+      };
+    });
 
-      await setDataAsync(updatedData);
-      return selectedCards;
-    },
-    [setDataAsync],
-  );
+    await setDataAsync(updatedData);
+  };
 
   const endDraw = async (isOathsworn) => {
     if (!data) return;
@@ -287,9 +271,8 @@ export function useMightDeckManager() {
   return {
     decks: data,
     isLoading,
-    dealRandomCard,
-    dealCard,
     dealMultipleRandomCards,
+    dealFromMultipleDecks,
     toggleCardSelection,
     getActiveCards,
     clearActiveCards,

@@ -1,15 +1,22 @@
 import { Button, Stack } from "@mui/material";
 import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
-import { useDeckDraw } from "../../../hooks/useDeckDraw";
 
 const buttonWidth = "155px";
 
 const MDDeckButtons = ({ colour, deckId }) => {
-  const { getCardsToDraw } = useCardsToDraw();
-  const { isLoading, shuffleDeck } = useMightDeckManager();
-  const { drawFromDeck } = useDeckDraw();
+  const { getCardsToDraw, setCardsToDraw } = useCardsToDraw();
+  const { isLoading, shuffleDeck, dealMultipleRandomCards } =
+    useMightDeckManager();
+
   const drawCount = getCardsToDraw(deckId);
+
+  if (!deckId) return null;
+
+  const handleDraw = () => {
+    dealMultipleRandomCards(deckId, drawCount);
+    setCardsToDraw(deckId, 0);
+  };
 
   return (
     <Stack
@@ -31,7 +38,11 @@ const MDDeckButtons = ({ colour, deckId }) => {
         >
           Shuffle
         </Button>
-        <Button variant="outlined" sx={{ width: buttonWidth, m: 0 }}>
+        <Button
+          variant="outlined"
+          sx={{ width: buttonWidth, m: 0 }}
+          disabled={true}
+        >
           Re-Draw
         </Button>
         <Button
@@ -46,7 +57,7 @@ const MDDeckButtons = ({ colour, deckId }) => {
         variant="contained"
         sx={{ width: buttonWidth, m: 0 }}
         disabled={isLoading || drawCount <= 0}
-        onClick={() => drawFromDeck(deckId)}
+        onClick={handleDraw}
       >
         {`Draw ${drawCount === 0 ? "" : drawCount} ${colour}`}
       </Button>
