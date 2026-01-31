@@ -1,11 +1,14 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
+import { useAppData } from "../../../hooks/useAppData";
 
 const CARDHEIGHT = 70;
 const CIRCLESIZE = 64;
 
 const MDCard = ({ colour, card }) => {
   const { toggleCardSelection } = useMightDeckManager();
+  const { getOathswornActive } = useAppData();
+
   if (!colour) return null;
 
   if (colour === "yellow") {
@@ -21,6 +24,8 @@ const MDCard = ({ colour, card }) => {
   }
 
   const toggleSelected = () => {
+    if (!getOathswornActive()) return;
+    if (card.isRedrawn) return;
     toggleCardSelection(card.cardID);
   };
 

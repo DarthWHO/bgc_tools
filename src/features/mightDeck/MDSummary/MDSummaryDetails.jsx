@@ -32,9 +32,16 @@ const MDSummaryDetails = () => {
       <Typography variant="h5" component="p" align="right">
         {`Crits: ${crits}`}
       </Typography>
-      <Typography variant="h5" component="p" align="right">
-        {`Misses: ${misses}`}
-      </Typography>
+      {getOathswornActive() && (
+        <Typography variant="h5" component="p" align="right">
+          {`Misses: ${misses}`}
+        </Typography>
+      )}
+      {!getOathswornActive() && (
+        <Typography variant="h7" component="p" align="right">
+          {`Not affected by misses`}
+        </Typography>
+      )}
     </Stack>
   );
 };

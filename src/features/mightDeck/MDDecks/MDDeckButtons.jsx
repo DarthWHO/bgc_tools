@@ -1,11 +1,13 @@
 import { Button, Stack } from "@mui/material";
 import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
+import { useAppData } from "../../../hooks/useAppData";
 
 const buttonWidth = "155px";
 
 const MDDeckButtons = ({ colour, deckId }) => {
   const { getCardsToDraw, setCardsToDraw } = useCardsToDraw();
+  const { getOathswornActive } = useAppData();
   const {
     isLoading,
     shuffleDeck,
@@ -50,24 +52,34 @@ const MDDeckButtons = ({ colour, deckId }) => {
           variant="outlined"
           sx={{ width: buttonWidth, m: 0 }}
           onClick={() => shuffleDeck(deckId)}
+          disabled={!getOathswornActive()}
         >
-          Shuffle
+          {getOathswornActive() ? "Shuffle" : "Shuffle (N/A)"}
         </Button>
         <Button
           variant="outlined"
           sx={{ width: buttonWidth, m: 0 }}
-          disabled={getSelectedNonCritCardCount(deckId) === 0}
+          disabled={
+            getSelectedNonCritCardCount(deckId) === 0 || !getOathswornActive()
+          }
           onClick={handleNonCritRedraw}
         >
-          {`Re-Draw (${getSelectedNonCritCardCount(deckId)})`}
+          {getOathswornActive()
+            ? `Re-Draw (${getSelectedNonCritCardCount(deckId)})`
+            : "Re-Draw (N/A)"}
         </Button>
+
         <Button
           variant="outlined"
-          disabled={getSelectedCritCardCount(deckId) === 0}
+          disabled={
+            getSelectedCritCardCount(deckId) === 0 || !getOathswornActive()
+          }
           sx={{ width: buttonWidth, m: 0 }}
           onClick={handleCritRedraw}
         >
-          {`Crits (${getSelectedCritCardCount(deckId)})`}
+          {getOathswornActive()
+            ? `Crits (${getSelectedCritCardCount(deckId)})`
+            : "Crits (N/A)"}
         </Button>
       </Stack>
       <Button
