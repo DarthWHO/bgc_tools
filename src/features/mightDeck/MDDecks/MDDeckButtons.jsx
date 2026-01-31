@@ -7,7 +7,7 @@ const buttonWidth = "155px";
 
 const MDDeckButtons = ({ colour, deckId }) => {
   const { getCardsToDraw } = useCardsToDraw();
-  const { isLoading } = useMightDeckManager();
+  const { isLoading, shuffleDeck } = useMightDeckManager();
   const { drawFromDeck } = useDeckDraw();
   const drawCount = getCardsToDraw(deckId);
 
@@ -24,7 +24,11 @@ const MDDeckButtons = ({ colour, deckId }) => {
       }}
     >
       <Stack spacing={1}>
-        <Button variant="outlined" sx={{ width: buttonWidth, m: 0 }}>
+        <Button
+          variant="outlined"
+          sx={{ width: buttonWidth, m: 0 }}
+          onClick={() => shuffleDeck(deckId)}
+        >
           Shuffle
         </Button>
         <Button variant="outlined" sx={{ width: buttonWidth, m: 0 }}>
@@ -44,7 +48,7 @@ const MDDeckButtons = ({ colour, deckId }) => {
         disabled={isLoading || drawCount <= 0}
         onClick={() => drawFromDeck(deckId)}
       >
-        {`Draw ${drawCount} ${colour}`}
+        {`Draw ${drawCount === 0 ? "" : drawCount} ${colour}`}
       </Button>
     </Stack>
   );

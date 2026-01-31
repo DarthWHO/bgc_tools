@@ -1,11 +1,19 @@
 import { Box, Grid, Typography } from "@mui/material";
+import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 
 const CARDHEIGHT = 70;
 const CIRCLESIZE = 64;
 
-const MDCard = ({ colour, deckId }) => {
+const MDCard = ({ colour, card }) => {
+  const { toggleCardSelection } = useMightDeckManager();
   if (!colour) return null;
-  const displayValue = 1;
+
+  const toggleSelected = () => {
+    toggleCardSelection(card.cardID);
+  };
+
+  const displayValue = card.isCrit ? "{ " + card.value + " }" : card.value;
+
   return (
     <Grid size={6}>
       <Box
@@ -13,17 +21,18 @@ const MDCard = ({ colour, deckId }) => {
         component="section"
         alignItems="center"
         justifyContent="center"
+        onClick={card.isRedrawn ? null : toggleSelected}
         sx={{
           cursor: "pointer",
           flexGrow: 1,
           p: 2,
           height: CARDHEIGHT,
           borderRadius: 2,
-          border: "1px solid",
-          borderColor: "black",
+          border: card.isSelected ? "1px solid" : "0px",
+          borderColor: card.isSelected ? "green" : "grey",
           transition: "boxShadow 1s",
-          boxShadow: "0px 0px",
-          backgroundColor: colour,
+          boxShadow: card.isSelected ? "2px 4px rgba(0, 0, 0, 0.3)" : "0px 0px",
+          bgcolor: colour,
         }}
       >
         <Box
@@ -39,7 +48,17 @@ const MDCard = ({ colour, deckId }) => {
             border: "1px solid black",
           }}
         >
-          <Typography variant="h4" component="h4" color={"rgba(0, 0, 0, .7)"}>
+          <Typography
+            variant="h4"
+            component="h4"
+            color={
+              card.isCrit
+                ? "rgba(0, 0, 0, 1)"
+                : card.isMiss
+                  ? "rgba(255, 0, 0, .6)"
+                  : "rgba(0, 0, 0, .7)"
+            }
+          >
             {displayValue}
           </Typography>
         </Box>

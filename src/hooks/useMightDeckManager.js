@@ -159,7 +159,26 @@ export function useMightDeckManager() {
     [setDataAsync],
   );
 
-  const resetDeck = async (deckID) => {
+  const endDraw = async (isOathsworn) => {
+    if (!data) return;
+
+    const updatedData = data.map((deck) => {
+      if (deck.isOathsworn === isOathsworn) {
+        return {
+          ...deck,
+          deck: deck.deck.map((card) => ({
+            ...card,
+            isActive: false,
+          })),
+        };
+      }
+      return deck;
+    });
+
+    await setDataAsync(updatedData);
+  };
+
+  const shuffleDeck = async (deckID) => {
     if (!data) return;
 
     const updatedData = data.map((deck) => {
@@ -167,7 +186,17 @@ export function useMightDeckManager() {
         return {
           ...deck,
           deck: deck.deck.map((card) =>
-            card.isActive ? { ...card, isDealt: false, isActive: false } : card,
+            card.isActive
+              ? card
+              : {
+                  ...card,
+                  isDealt: false,
+                  drawOrder: 0,
+                  isSelected: false,
+                  isRedrawn: false,
+                  isCritMissNegated: false,
+                  isCritAlreadyDrawn: false,
+                },
           ),
         };
       }
@@ -228,6 +257,29 @@ export function useMightDeckManager() {
     return { total, dealt, remaining, remainingByType };
   };
 
+  const getActiveCards = (deckID) => {
+    if (!data) return [];
+    const deck = data.find((d) => d.deckID === deckID);
+    return deck ? deck.deck.filter((card) => card.isActive) : [];
+  };
+
+  const toggleCardSelection = async (cardID) => {
+    if (!data) return;
+
+    const updatedData = data.map((deck) => {
+      return {
+        ...deck,
+        deck: deck.deck.map((card) =>
+          card.cardID === cardID
+            ? { ...card, isSelected: !card.isSelected }
+            : card,
+        ),
+      };
+    });
+
+    await setDataAsync(updatedData);
+  };
+
   const resetMightDeckDataToInitial = async () => {
     await setDataAsync(initialData);
   };
@@ -238,10 +290,13 @@ export function useMightDeckManager() {
     dealRandomCard,
     dealCard,
     dealMultipleRandomCards,
+    toggleCardSelection,
+    getActiveCards,
     clearActiveCards,
     getUndealtCards,
     getDeckStats,
-    resetDeck,
+    shuffleDeck,
     resetMightDeckDataToInitial,
+    endDraw,
   };
 }

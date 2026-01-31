@@ -8,7 +8,7 @@ import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
 const buttonWidth = "155px";
 
 const MDSummaryButtons = () => {
-  const { decks, isLoading, getDeckStats } = useMightDeckManager();
+  const { decks, isLoading, getDeckStats, endDraw } = useMightDeckManager();
   const { setOathswornActive, getOathswornActive } = useAppData();
   const { drawFromMultipleDecks } = useDeckDraw();
   const { getCardCountByPrefix } = useCardsToDraw();
@@ -41,7 +41,7 @@ const MDSummaryButtons = () => {
         sx={{ width: buttonWidth }}
         onClick={() => drawFromMultipleDecks(deckIds)}
       >
-        Draw All
+        {`Draw ${totalCardsToDraw === 0 ? "" : totalCardsToDraw} Cards`}
       </Button>
       <Button
         variant="outlined"
@@ -55,7 +55,7 @@ const MDSummaryButtons = () => {
         variant="outlined"
         disabled={false}
         sx={{ width: buttonWidth }}
-        onClick={() => null}
+        onClick={() => endDraw(getOathswornActive())}
       >
         End Draw
       </Button>
