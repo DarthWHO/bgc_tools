@@ -24,6 +24,10 @@ const MDCard = ({ colour, card }) => {
     colour = "#303030";
   }
 
+  if (card.isRedrawn) {
+    colour = "grey";
+  }
+
   const toggleSelected = () => {
     if (!getOathswornActive()) return;
     if (card.isCritAlreadyDrawn) {
@@ -64,10 +68,13 @@ const MDCard = ({ colour, card }) => {
             ? "3px 5px rgba(30, 30, 30, 0.3)"
             : "0px 0px",
           bgcolor: colour,
-          "&:hover": {
-            boxShadow: "3px 5px rgba(30, 30, 30, 0.3)",
-            transition: "0.3s",
-          },
+          "&:hover":
+            card.isRedrawn || card.isCritAlreadyDrawn
+              ? {}
+              : {
+                  boxShadow: "3px 5px rgba(30, 30, 30, 0.3)",
+                  transition: "0.3s",
+                },
         }}
       >
         <Box
@@ -79,7 +86,7 @@ const MDCard = ({ colour, card }) => {
             height: CIRCLESIZE,
             width: CIRCLESIZE,
             borderRadius: 100,
-            bgcolor: "white",
+            bgcolor: card.isRedrawn ? "darkgrey" : "white",
             border: "1px solid black",
           }}
         >
@@ -87,7 +94,7 @@ const MDCard = ({ colour, card }) => {
             variant="h4"
             component="h4"
             color={
-              card.isCrit
+              card.isCrit || card.isCritMissNegated || card.isRedrawn
                 ? "rgba(0, 0, 0, 1)"
                 : card.isMiss
                   ? "rgba(255, 0, 0, .6)"
