@@ -33,6 +33,11 @@ const MDSummaryButtons = () => {
     }
   };
 
+  const handEndDraw = async () => {
+    await endDraw(getOathswornActive());
+    resetMultipleDecks(deckIds);
+  };
+
   const isDrawAllDisabled = isLoading || totalCardsToDraw === 0;
 
   return (
@@ -70,7 +75,7 @@ const MDSummaryButtons = () => {
         variant="outlined"
         disabled={false}
         sx={{ width: buttonWidth }}
-        onClick={() => endDraw(getOathswornActive())}
+        onClick={handEndDraw}
       >
         End Draw
       </Button>

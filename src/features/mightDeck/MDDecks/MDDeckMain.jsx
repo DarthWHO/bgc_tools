@@ -8,6 +8,7 @@ import {
 
 import NumberSpinner from "../../../ui/NumberSpinner";
 import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
+import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 
 import MDDeckSummary from "./MDDeckSummary";
 import MDDeckButtons from "./MDDeckButtons";
@@ -15,7 +16,10 @@ import MDCardsArea from "./MDCardsArea";
 
 const MDDeckMain = ({ colour, deckId }) => {
   const { getCardsToDraw, setCardsToDraw } = useCardsToDraw();
+  const { getInactiveCardCount } = useMightDeckManager();
   const drawCount = getCardsToDraw(deckId);
+
+  const inactiveCardCount = getInactiveCardCount(deckId);
 
   const handleDrawCountChange = (nextValue) => {
     setCardsToDraw(deckId, nextValue);
@@ -33,7 +37,7 @@ const MDDeckMain = ({ colour, deckId }) => {
             <MDDeckSummary deckId={deckId} />
             <NumberSpinner
               min={0}
-              max={18}
+              max={inactiveCardCount}
               value={drawCount}
               size="small"
               onValueChange={handleDrawCountChange}
