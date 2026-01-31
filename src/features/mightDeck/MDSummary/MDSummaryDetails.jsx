@@ -29,9 +29,17 @@ const MDSummaryDetails = () => {
       <Typography variant="h5" component="p" align="right">
         {`Total: ${total}`}
       </Typography>
-      <Typography variant="h5" component="p" align="right">
-        {`Crits: ${crits}`}
-      </Typography>
+      {getOathswornActive() && (
+        <Typography variant="h5" component="p" align="right">
+          {`Crits: ${crits}`}
+        </Typography>
+      )}
+      {!getOathswornActive() && (
+        <Typography variant="h7" component="p" align="right">
+          {`Not affected by crits`}
+        </Typography>
+      )}
+
       {getOathswornActive() && (
         <Typography variant="h5" component="p" align="right">
           {`Misses: ${misses}`}

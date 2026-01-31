@@ -52,7 +52,12 @@ export function useMightDeckManager() {
   };
 
   // Helper: Update deck with dealt cards
-  const updateDeckWithDealtCards = (currentData, deckID, cardsToDeal) => {
+  const updateDeckWithDealtCards = (
+    currentData,
+    deckID,
+    cardsToDeal,
+    critDraw = false,
+  ) => {
     return currentData.map((d) => {
       if (d.deckID === deckID) {
         return {
@@ -67,6 +72,7 @@ export function useMightDeckManager() {
                   isDealt: true,
                   isActive: true,
                   drawOrder: cardUpdate.drawOrder,
+                  isCritMissNegated: critDraw,
                 }
               : card;
           }),
@@ -77,7 +83,7 @@ export function useMightDeckManager() {
   };
 
   // Helper: Deal cards from a single deck with auto-shuffle
-  const dealCardsFromDeck = (currentData, deckID, count) => {
+  const dealCardsFromDeck = (currentData, deckID, count, critDraw = false) => {
     const deck = findDeck(deckID, currentData);
     if (!deck) return { updatedData: currentData, dealtCards: [] };
 
@@ -121,6 +127,7 @@ export function useMightDeckManager() {
       workingData,
       deckID,
       cardsToDeal,
+      critDraw,
     );
     return { updatedData, dealtCards };
   };
@@ -323,10 +330,8 @@ export function useMightDeckManager() {
               c.cardID === card.cardID
                 ? {
                     ...c,
-                    isRedrawn: true,
                     isSelected: false,
                     isCritAlreadyDrawn: true,
-                    isCritMissNegated: true,
                   }
                 : c,
             ),
@@ -335,7 +340,7 @@ export function useMightDeckManager() {
         return d;
       });
 
-      const { updatedData } = dealCardsFromDeck(currentData, deckID, 1);
+      const { updatedData } = dealCardsFromDeck(currentData, deckID, 1, true);
       currentData = updatedData;
     }
 

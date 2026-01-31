@@ -26,7 +26,7 @@ const MDCard = ({ colour, card }) => {
 
   const toggleSelected = () => {
     if (!getOathswornActive()) return;
-    if (card.isCrit && card.isRedrawn) {
+    if (card.isCritAlreadyDrawn) {
       toast.error("Crit already used");
       return;
     }
