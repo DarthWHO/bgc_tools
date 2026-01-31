@@ -71,6 +71,19 @@ export function useCardsToDraw(defaultValue = DEFAULT_CARDS_TO_DRAW) {
     [defaultValue, normalizedData, setData],
   );
 
+  const getCardCountByPrefix = useCallback(
+    (prefix) => {
+      if (!prefix) return 0;
+
+      return Object.entries(normalizedData).reduce((sum, [key, value]) => {
+        return key.startsWith(prefix) && typeof value === "number"
+          ? sum + value
+          : sum;
+      }, 0);
+    },
+    [normalizedData],
+  );
+
   return {
     isLoading,
     isUpdating,
@@ -78,5 +91,6 @@ export function useCardsToDraw(defaultValue = DEFAULT_CARDS_TO_DRAW) {
     setCardsToDraw,
     resetCardsToDraw,
     resetMultipleDecks,
+    getCardCountByPrefix,
   };
 }

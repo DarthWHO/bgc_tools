@@ -3,6 +3,7 @@ import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 import { useAppData } from "../../../hooks/useAppData";
 import { useDeckDraw } from "../../../hooks/useDeckDraw";
 import { getAllDeckIds } from "../../../utils/deckConstants";
+import { useCardsToDraw } from "../../../hooks/useCardsToDraw";
 
 const buttonWidth = "155px";
 
@@ -10,6 +11,9 @@ const MDSummaryButtons = () => {
   const { decks, isLoading, getDeckStats } = useMightDeckManager();
   const { setOathswornActive, getOathswornActive } = useAppData();
   const { drawFromMultipleDecks } = useDeckDraw();
+  const { getCardCountByPrefix } = useCardsToDraw();
+  const prefix = getOathswornActive() ? "o" : "e";
+  const totalCardsToDraw = getCardCountByPrefix(prefix);
 
   if (!decks) return null;
 
@@ -18,7 +22,8 @@ const MDSummaryButtons = () => {
     (deckId) => getDeckStats(deckId).remaining === 0,
   );
 
-  const isDrawAllDisabled = allDecksEmpty || isLoading;
+  const isDrawAllDisabled =
+    allDecksEmpty || isLoading || totalCardsToDraw === 0;
 
   return (
     <Stack
