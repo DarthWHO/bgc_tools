@@ -1,6 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 import { useAppData } from "../../../hooks/useAppData";
+import toast from "react-hot-toast";
 
 const CARDHEIGHT = 70;
 const CIRCLESIZE = 64;
@@ -25,7 +26,14 @@ const MDCard = ({ colour, card }) => {
 
   const toggleSelected = () => {
     if (!getOathswornActive()) return;
-    if (card.isRedrawn) return;
+    if (card.isCrit && card.isRedrawn) {
+      toast.error("Crit already used");
+      return;
+    }
+    if (card.isRedrawn) {
+      toast.error("Card already redrawn");
+      return;
+    }
     toggleCardSelection(card.cardID);
   };
 
@@ -38,7 +46,7 @@ const MDCard = ({ colour, card }) => {
         component="section"
         alignItems="center"
         justifyContent="center"
-        onClick={card.isRedrawn ? null : toggleSelected}
+        onClick={toggleSelected}
         sx={{
           cursor: "pointer",
           flexGrow: 1,
