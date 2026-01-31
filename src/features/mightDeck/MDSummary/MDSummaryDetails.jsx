@@ -16,6 +16,8 @@ const MDSummaryDetails = () => {
   const misses = calculateMisses(decks, getOathswornActive());
   const crits = calculateCrits(decks, getOathswornActive());
 
+  const isTooManyMisses = getOathswornActive() && misses > 1;
+
   return (
     <Stack
       direction="column"
@@ -26,7 +28,16 @@ const MDSummaryDetails = () => {
         alignItems: "right",
       }}
     >
-      <Typography variant="h5" component="p" align="right">
+      <Typography
+        variant="h5"
+        component="p"
+        align="right"
+        sx={{
+          fontWeight: isTooManyMisses ? "bold" : "normal",
+          color: isTooManyMisses ? "red" : "inherit",
+          textDecoration: isTooManyMisses ? "line-through" : "none",
+        }}
+      >
         {`Total: ${total}`}
       </Typography>
       {getOathswornActive() && (
