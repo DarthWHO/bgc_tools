@@ -1,19 +1,16 @@
-import { Box, Grid, Typography, Stack } from "@mui/material";
+import { useState } from "react";
+import { Typography, Stack } from "@mui/material";
 import MDInstructions from "./MDInstructions";
-import MDHistory from "./MDHistory";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import MDReset from "./MDReset";
 import { useAppData } from "../../../hooks/useAppData";
-import { useMightDeckManager } from "../../../hooks/useMightDeckManager";
 
 const MDHeading = () => {
-  const { getOathswornActive, resetAppDataToInitial } = useAppData();
-  const { resetMightDeckDataToInitial } = useMightDeckManager();
+  const [instructionsOpen, setInstructionsOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
+  const { getOathswornActive } = useAppData();
+
   const isOathsworn = getOathswornActive();
 
-  const handleReset = () => {
-    resetAppDataToInitial();
-    resetMightDeckDataToInitial();
-  };
   return (
     <Stack
       direction="row"
@@ -23,11 +20,11 @@ const MDHeading = () => {
         alignItems: "center",
       }}
     >
-      <MDInstructions />
+      <MDInstructions open={instructionsOpen} setOpen={setInstructionsOpen} />
       <Typography variant="h5" component="h5">
         {`${isOathsworn ? "Oathsworn" : "Enemy"} Might Deck`}
       </Typography>
-      <RestartAltIcon onClick={() => handleReset()} cursor="pointer" />
+      <MDReset open={resetOpen} setOpen={setResetOpen} />
     </Stack>
   );
 };

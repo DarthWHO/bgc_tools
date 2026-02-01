@@ -13,8 +13,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import CasinoIcon from "@mui/icons-material/Casino";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import { useNavigate } from "react-router-dom";
 
 const pages = ["Oathsworn", "Middara", "About"];
@@ -149,7 +149,11 @@ function Header() {
               }
             >
               <IconButton onClick={handleThemeChange} sx={{ p: 0 }}>
-                {mode === "light" ? <DarkModeIcon /> : <LightModeIcon />}
+                {mode === "light" ? (
+                  <DarkModeOutlinedIcon />
+                ) : (
+                  <LightModeOutlinedIcon />
+                )}
               </IconButton>
             </Tooltip>
           </Box>

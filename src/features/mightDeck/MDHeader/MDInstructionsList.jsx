@@ -1,13 +1,13 @@
-import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import Grid from "@mui/material/Grid";
-import MDListItem from "./MDInstructionsListItem";
+import MDInstuctionsListItem from "./MDInstructionsListItem";
 
 const instructions = [
   {
     id: 0,
-    primary: "Select how many to draw from each deck. Click 'Draw All'",
-    secondary: "",
+    primary:
+      "Select how many to draw from each deck. Click 'Draw X Cards' or Draw 'Colour' from each deck individually",
+    secondary:
+      "If you draw more than available, it will draw all remaining cards and shuffle any cards not in play and continue drawing",
   },
   {
     id: 1,
@@ -17,23 +17,18 @@ const instructions = [
   {
     id: 2,
     primary: "Click on 'Shuffle' to manually shuffle a deck",
-    secondary: "",
+    secondary: "Remember to use your token!",
   },
   {
     id: 3,
     primary: "CRIT: if a crit is drawn, be sure to draw additional cards",
-    secondary: "Misses will not count",
+    secondary: "Misses on crits will not count towards your total misses.",
   },
   {
     id: 4,
-    primary:
-      "Chances: select your cards and calculate odds of success before drawing",
-    secondary: "(BETA)",
-  },
-  {
-    id: 5,
     primary: "Switch between Oathsworn and Enemy using the 'Switch' button",
-    secondary: "Note: will end the current draw",
+    secondary:
+      "Note: will NOT end the current draw allowing you to plan ahead viewing what is remaining for the enemy or vice versa",
   },
 ];
 
@@ -41,23 +36,17 @@ const MDInstructionsList = () => {
   const dense = true;
 
   return (
-    <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <List dense={dense}>
-            {instructions.map((instruction) => {
-              return (
-                <MDListItem
-                  key={instruction.id}
-                  primary={instruction.primary}
-                  secondary={instruction.secondary}
-                />
-              );
-            })}
-          </List>
-        </Grid>
-      </Grid>
-    </Box>
+    <List dense={dense}>
+      {instructions.map((instruction) => {
+        return (
+          <MDInstuctionsListItem
+            key={instruction.id}
+            primary={instruction.primary}
+            secondary={instruction.secondary}
+          />
+        );
+      })}
+    </List>
   );
 };
 
