@@ -1,13 +1,7 @@
-import { Typography, Box } from "@mui/material";
+import AboutMe from "../features/about/AboutMe";
 
 const About = () => {
-  return (
-    <Box sx={{ flexGrow: 1, p: 1 }}>
-      <Typography variant="h4" gutterBottom>
-        About BGC Tools
-      </Typography>
-    </Box>
-  );
+  return <AboutMe />;
 };
 
 export default About;
