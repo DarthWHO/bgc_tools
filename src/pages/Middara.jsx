@@ -1,4 +1,4 @@
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Paper } from "@mui/material";
 
 import Remi from "../features/middara/assets/images/remi.jpg";
 import Nightingale from "../features/middara/assets/images/nightingale.jpg";
@@ -16,7 +16,14 @@ const Middara = () => {
       }}
     >
       <Grid item xs={12} md={6}>
-        <Box sx={{ p: 4, maxWidth: "100%", margin: "0 auto" }}>
+        <Box
+          sx={{
+            p: 4,
+            maxWidth: "100%",
+            margin: "0 auto",
+            position: "relative",
+          }}
+        >
           <Box
             component="img"
             src={Remi}
@@ -24,6 +31,18 @@ const Middara = () => {
             height="25vw"
             sx={{ transform: "scaleX(-1)" }}
           />
+          <Paper
+            sx={{
+              position: "absolute",
+              top: 40,
+              left: 350,
+              width: 480,
+              height: 460,
+              p: 2,
+            }}
+          >
+            {/* Your content here */}
+          </Paper>
         </Box>
       </Grid>
       <Grid item xs={12} md={6}>
