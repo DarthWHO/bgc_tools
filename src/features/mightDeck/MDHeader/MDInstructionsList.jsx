@@ -22,13 +22,14 @@ const instructions = [
   },
   {
     id: 3,
-    primary: "CRIT: if a crit is drawn, be sure to draw additional cards",
+    primary: "CRITS: If a crit is drawn, be sure to draw additional cards",
     secondary: "Misses on crits will not count towards your total misses.",
   },
   {
     id: 4,
-    primary: "REDRAW: you may choose to redraw it.",
-    secondary: "Redrawn cards cannot be selected again.",
+    primary: "RE-DRAW: Choose to re-draw a selected card.",
+    secondary:
+      "Redrawn cards cannot be selected again. Remember to use your token!",
   },
   {
     id: 5,
