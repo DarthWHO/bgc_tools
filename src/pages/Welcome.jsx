@@ -1,13 +1,7 @@
-import { Typography, Box } from "@mui/material";
+import WelcomeContent from "../features/welcome/WelcomeContent";
 
 const Welcome = () => {
-  return (
-    <Box sx={{ flexGrow: 1, p: 1 }}>
-      <Typography variant="h4" gutterBottom>
-        Welcome Page
-      </Typography>
-    </Box>
-  );
+  return <WelcomeContent />;
 };
 
 export default Welcome;
