@@ -25,7 +25,7 @@ const MMain = () => {
       }}
     >
       {activeCharacters.map((char, index) => (
-        <Grid key={char}>
+        <Grid key={char} size={{ xs: 12, sm: 12, md: 12, lg: 6 }} p={2}>
           <MCharacterMain
             character={char}
             img={characterImages[char]}

@@ -1,24 +1,24 @@
+import { useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import MSearch from "./MSearch";
+import MSettingsMain from "./MSettingsMain";
+import MInstructions from "./MInstructions";
 
 const MHeader = () => {
+  const [settingsOpen, setSettingsOpen] = useState(false);
   return (
     <Stack
       direction="row"
       spacing={2}
-      justifyContent="space-between"
-      alignItems="center"
-      sx={{ padding: 1 }}
+      sx={{
+        justifyContent: "space-between",
+        alignItems: "center",
+        px: 3,
+      }}
     >
-      <Typography
-        variant="h7"
-        sx={{ flexGrow: 1, justifyContent: "left" }}
-      ></Typography>
+      <MInstructions open={settingsOpen} setOpen={setSettingsOpen} />
       <MSearch />
-      <Typography
-        variant="h7"
-        sx={{ flexGrow: 1, justifyContent: "right" }}
-      ></Typography>
+      <MSettingsMain open={settingsOpen} setOpen={setSettingsOpen} />
     </Stack>
   );
 };

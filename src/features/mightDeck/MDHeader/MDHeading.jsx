@@ -18,6 +18,7 @@ const MDHeading = () => {
       sx={{
         justifyContent: "space-between",
         alignItems: "center",
+        px: 3,
       }}
     >
       <MDInstructions open={instructionsOpen} setOpen={setInstructionsOpen} />
