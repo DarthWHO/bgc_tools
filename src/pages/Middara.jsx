@@ -1,84 +1,12 @@
-import { Grid, Box, Paper } from "@mui/material";
-
-import Remi from "../features/middara/assets/images/remi.jpg";
-import Nightingale from "../features/middara/assets/images/nightingale.jpg";
-import Rook from "../features/middara/assets/images/rook.jpg";
-import Zeke from "../features/middara/assets/images/zeke.jpg";
+import MHeader from "../features/middara/MHeader/MHeader";
+import MMain from "../features/middara/MMain/MMain";
 
 const Middara = () => {
   return (
-    <Grid
-      container
-      direction="row"
-      sx={{
-        justifyContent: "space-around",
-        alignItems: "center",
-      }}
-    >
-      <Grid item xs={12} md={6}>
-        <Box
-          sx={{
-            p: 4,
-            maxWidth: "100%",
-            margin: "0 auto",
-            position: "relative",
-          }}
-        >
-          <Box
-            component="img"
-            src={Remi}
-            alt="Remi"
-            height="25vw"
-            sx={{ transform: "scaleX(-1)" }}
-          />
-          <Paper
-            sx={{
-              position: "absolute",
-              top: 40,
-              left: 350,
-              width: 480,
-              height: 460,
-              p: 2,
-            }}
-          >
-            {/* Your content here */}
-          </Paper>
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Box sx={{ p: 4, maxWidth: "100%", margin: "0 auto" }}>
-          <Box
-            component="img"
-            src={Nightingale}
-            alt="Nightingale"
-            height="25vw"
-            sx={{ transform: "scaleX(1)" }}
-          />
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Box sx={{ p: 4, maxWidth: "100%", margin: "0 auto" }}>
-          <Box
-            component="img"
-            src={Rook}
-            alt="Rook"
-            height="25vw"
-            sx={{ transform: "scaleX(-1)" }}
-          />
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Box sx={{ p: 4, maxWidth: "100%", margin: "0 auto" }}>
-          <Box
-            component="img"
-            src={Zeke}
-            alt="Zeke"
-            height="25vw"
-            sx={{ transform: "scaleX(1)" }}
-          />
-        </Box>
-      </Grid>
-    </Grid>
+    <>
+      <MHeader />
+      <MMain />
+    </>
   );
 };
 
