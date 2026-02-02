@@ -2,8 +2,9 @@ import { Box, Paper, Container, Stack } from "@mui/material";
 import MCharacterName from "./MCharacterName";
 import MCharacterAvatar from "./MCharacterAvatar";
 import MCharacterCircleStatBox from "./MCharacterCircleStatBox";
+import MCharacterCircleStatIcon from "./MCharacterCircleStatIcon";
 
-const MCharacterLayout = ({ character, img, stats }) => {
+const MCharacterLayout = ({ character, img }) => {
   return (
     <Paper square={false} elevation={16} sx={{ height: "50vh", width: "100%" }}>
       <Stack direction="row" height="100%">
@@ -20,7 +21,7 @@ const MCharacterLayout = ({ character, img, stats }) => {
               id="character-circle-stats"
               sx={{ height: "15%", width: "100%" }}
             >
-              <MCharacterCircleStatBox character={character} stats={stats} />
+              <MCharacterCircleStatBox character={character} />
             </Box>
           </Stack>
         </Box>

@@ -1,21 +1,31 @@
-import { Box } from "@mui/material";
-import IconProvider from "../svgComponents/IconProvider";
+import { Box, Stack } from "@mui/material";
+import MCharacterCircleStatIcon from "./MCharacterCircleStatIcon";
 
-const MCharacterCircleStatBox = ({ character, stats }) => {
+const coreStats = ["Health", "Defense", "Movement", "Armor"];
+const secondaryStats = [
+  "Presence",
+  "Lore",
+  "Agility",
+  "Perception",
+  "Strength",
+];
+
+const MCharacterCircleStatBox = () => {
   return (
-    <Box
-      sx={{
-        bgcolor: "#E54A2E",
-        height: "50px",
-        width: "50px",
-        borderRadius: "50%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+    <Stack
+      direction="row"
+      spacing={2}
+      justifyContent="center"
+      alignItems="center"
+      sx={{ height: "100%", width: "100%" }}
     >
-      <IconProvider icon="Health" fillColour="#FED8A1" />
-    </Box>
+      {coreStats.map((stat) => (
+        <MCharacterCircleStatIcon key={stat} stat={stat} />
+      ))}
+      {secondaryStats.map((stat) => (
+        <MCharacterCircleStatIcon key={stat} stat={stat} />
+      ))}
+    </Stack>
   );
 };
 

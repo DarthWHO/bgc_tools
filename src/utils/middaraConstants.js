@@ -1,3 +1,50 @@
+export const characterStatInitial = {
+  remi: {
+    health: 12,
+    defense: 7,
+    armor: 0,
+    movement: 6,
+    presence: 3,
+    lore: 2,
+    agility: 6,
+    perception: 3,
+    strength: 4,
+  },
+  nightingale: {
+    health: 12,
+    defense: 7,
+    armor: 0,
+    movement: 6,
+    presence: 3,
+    lore: 2,
+    agility: 6,
+    perception: 3,
+    strength: 4,
+  },
+  rook: {
+    health: 12,
+    defense: 7,
+    armor: 0,
+    movement: 6,
+    presence: 3,
+    lore: 2,
+    agility: 6,
+    perception: 3,
+    strength: 4,
+  },
+  zeke: {
+    health: 12,
+    defense: 7,
+    armor: 0,
+    movement: 6,
+    presence: 3,
+    lore: 2,
+    agility: 6,
+    perception: 3,
+    strength: 4,
+  },
+};
+
 export const diceColours = {
   black: {
     line: "white",
