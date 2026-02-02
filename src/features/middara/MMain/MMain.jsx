@@ -1,12 +1,21 @@
 import { Grid } from "@mui/material";
-import Remi from "../assets/images/remi.jpg";
-import Nightingale from "../assets/images/nightingale.jpg";
-import Rook from "../assets/images/rook.jpg";
-import Zeke from "../assets/images/zeke.jpg";
-import MCharacterMain from "../MCharacter/MCharacterMain";
+import Remi from "../assets/images/remi.webp";
+import Nightingale from "../assets/images/nightingale.webp";
+import Rook from "../assets/images/rook.webp";
+import Zeke from "../assets/images/zeke.webp";
+import MCharacterLayout from "../MCharacter/MCharacterLayout";
 
+// TODO: REPLACE WITH DYNAMIC DATA LATER
 const activeCharacters = ["remi", "nightingale", "rook", "zeke"];
 
+const characterStats = {
+  remi: { hp: 30, sp: 10 },
+  nightingale: { hp: 25, sp: 15 },
+  rook: { hp: 40, sp: 5 },
+  zeke: { hp: 35, sp: 8 },
+};
+
+// TODO: IMPORT ALL CHARACTER IMAGES HERE AND MAP TO NAMES
 const characterImages = {
   remi: Remi,
   nightingale: Nightingale,
@@ -24,12 +33,12 @@ const MMain = () => {
         alignItems: "center",
       }}
     >
-      {activeCharacters.map((char, index) => (
+      {activeCharacters.map((char) => (
         <Grid key={char} size={{ xs: 12, sm: 12, md: 12, lg: 6 }} p={2}>
-          <MCharacterMain
+          <MCharacterLayout
             character={char}
             img={characterImages[char]}
-            index={index + 1}
+            stats={characterStats[char]}
           />
         </Grid>
       ))}
