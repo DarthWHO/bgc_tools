@@ -40,7 +40,6 @@ const IconProvider = ({
   width = defaultSize,
   height = defaultSize,
 }) => {
-  console.log("IconProvider:", { icon, fillColour, width, height });
   const IconComponent = iconImages[icon];
   return <IconComponent fill={fillColour} width={width} height={height} />;
 };

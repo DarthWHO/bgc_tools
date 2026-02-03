@@ -107,3 +107,35 @@ export const diceColours = {
     fill: "#007A4D",
   },
 };
+
+export const statColours = (stat) => {
+  let bgColour;
+  let fillColour;
+  switch (stat) {
+    case "Presence":
+      bgColour = "#964698";
+      fillColour = "#FFFFFF";
+      break;
+    case "Lore":
+      bgColour = "#18AEE5";
+      fillColour = "#FFFFFF";
+      break;
+    case "Agility":
+      bgColour = "#8DC644";
+      fillColour = "#FFFFFF";
+      break;
+    case "Perception":
+      bgColour = "#F99C26";
+      fillColour = "#FFFFFF";
+      break;
+    case "Strength":
+      bgColour = "#D12828";
+      fillColour = "#FFFFFF";
+      break;
+    default:
+      bgColour = "#E54A2E";
+      fillColour = "#FED8A1";
+  }
+
+  return { bgColour, fillColour };
+};

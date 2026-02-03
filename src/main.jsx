@@ -12,6 +12,11 @@ const theme = createTheme({
   colorSchemes: {
     dark: true,
   },
+  palette: {
+    bgcTools: {
+      badge: "#FFFFFF",
+    },
+  },
 });
 
 createRoot(document.getElementById("root")).render(

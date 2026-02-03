@@ -1,8 +1,8 @@
-import { Box, Paper, Container, Stack } from "@mui/material";
+import { Box, Paper, Stack } from "@mui/material";
 import MCharacterName from "./MCharacterName";
 import MCharacterAvatar from "./MCharacterAvatar";
 import MCharacterCircleStatBox from "./MCharacterCircleStatBox";
-import MCharacterCircleStatIcon from "./MCharacterCircleStatIcon";
+import MCharacterSPCircleContainer from "./MCharacterSPCircleContainer";
 
 const MCharacterLayout = ({ character, img }) => {
   return (
@@ -10,8 +10,19 @@ const MCharacterLayout = ({ character, img }) => {
       <Stack direction="row" height="100%">
         <Box id="character-main-left" sx={{ height: "100%", width: "80%" }}>
           <Stack direction="column" height="100%">
-            <Box id="character-title" sx={{ height: "15%", width: "100%" }}>
+            <Box
+              id="character-title"
+              sx={{
+                height: "15%",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "space-between",
+                display: "flex",
+                px: 2,
+              }}
+            >
               <MCharacterName character={character} />
+              <MCharacterSPCircleContainer />
             </Box>
             <Box
               id="character-main-content"
