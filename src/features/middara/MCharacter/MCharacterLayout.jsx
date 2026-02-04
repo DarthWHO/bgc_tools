@@ -3,17 +3,18 @@ import MCharacterName from "./MCharacterName";
 import MCharacterAvatar from "./MCharacterAvatar";
 import MCharacterCircleStatBox from "./MCharacterCircleStatBox";
 import MCharacterSPCircleContainer from "./MCharacterSPCircleContainer";
+import MCharacterMainContent from "./MCharacterMainContent";
 
 const MCharacterLayout = ({ character, img }) => {
   return (
-    <Paper square={false} elevation={16} sx={{ height: "50vh", width: "100%" }}>
+    <Paper square={false} elevation={16} sx={{ height: "60vh", width: "100%" }}>
       <Stack direction="row" height="100%">
-        <Box id="character-main-left" sx={{ height: "100%", width: "80%" }}>
+        <Box id="character-main-left" sx={{ height: "100%", width: "85%" }}>
           <Stack direction="column" height="100%">
             <Box
               id="character-title"
               sx={{
-                height: "15%",
+                height: "8%",
                 width: "100%",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -26,17 +27,19 @@ const MCharacterLayout = ({ character, img }) => {
             </Box>
             <Box
               id="character-main-content"
-              sx={{ height: "70%", width: "100%" }}
-            ></Box>
+              sx={{ height: "80%", width: "100%" }}
+            >
+              <MCharacterMainContent />
+            </Box>
             <Box
               id="character-circle-stats"
-              sx={{ height: "15%", width: "100%" }}
+              sx={{ height: "12%", width: "100%" }}
             >
               <MCharacterCircleStatBox character={character} />
             </Box>
           </Stack>
         </Box>
-        <Box id="character-main-right" sx={{ height: "100%", width: "20%" }}>
+        <Box id="character-main-right" sx={{ height: "100%", width: "15%" }}>
           <Stack direction="column" height="100%">
             <Box
               id="character-avatar"

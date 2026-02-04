@@ -1,0 +1,132 @@
+{
+  "remi": {
+    "stats": {
+      "health": 12,
+      "defense": 7,
+      "armor": 0,
+      "movement": 6,
+      "presence": 3,
+      "lore": 2,
+      "agility": 6,
+      "perception": 3,
+      "strength": 4
+    },
+    "start": [],
+    "move": [
+      {
+        "id": "move-1",
+        "type": "passive",
+        "text": "Move 1 diagnoally",
+        "cost": 1
+      },
+      {
+        "id": "move-2",
+        "type": "exhaust",
+        "text": "Gain flight if over half health",
+        "cost": 2
+      },
+      {
+        "id": "move-3",
+        "type": "exhaust",
+        "text": "Move 1 (no break attacks)",
+        "cost": 0
+      }
+    ],
+    "conviction": [],
+    "spell": [
+      {
+        "id": "spell-1",
+        "type": "passive",
+        "text": "Missed spell - gain energy token",
+        "cost": 0
+      },
+      {
+        "id": "spell-2",
+        "type": "exhaust",
+        "text": "+1 to Roll",
+        "cost": 0
+      }
+    ],
+    "attacked": [],
+    "attack": [],
+    "hit": [
+      {
+        "id": "hit-1",
+        "type": "exhaust",
+        "text": "+2 same damage (spell or attack)",
+        "cost": 0
+      }
+    ],
+    "other": [
+      {
+        "id": "other-1",
+        "type": "encounter",
+        "text": "Re-roll any of your dice",
+        "cost": 0
+      }
+    ]
+  },
+  "nightingale": {
+    "stats": {
+      "health": 12,
+      "defense": 7,
+      "armor": 0,
+      "movement": 6,
+      "presence": 6,
+      "lore": 3,
+      "agility": 5,
+      "perception": 2,
+      "strength": 2
+    },
+    "start": [],
+    "move": [],
+    "conviction": [],
+    "spell": [],
+    "attacked": [],
+    "attack": [],
+    "hit": [],
+    "other": []
+  },
+  "rook": {
+    "stats": {
+      "health": 14,
+      "defense": 7,
+      "armor": 0,
+      "movement": 6,
+      "presence": 4,
+      "lore": 5,
+      "agility": 1,
+      "perception": 2,
+      "strength": 6
+    },
+    "start": [],
+    "move": [],
+    "conviction": [],
+    "spell": [],
+    "attacked": [],
+    "attack": [],
+    "hit": [],
+    "other": []
+  },
+  "zeke": {
+    "stats": {
+      "health": 12,
+      "defense": 7,
+      "armor": 0,
+      "movement": 6,
+      "presence": 2,
+      "lore": 2,
+      "agility": 4,
+      "perception": 6,
+      "strength": 4
+    },
+    "start": [],
+    "move": [],
+    "conviction": [],
+    "spell": [],
+    "attacked": [],
+    "attack": [],
+    "hit": [],
+    "other": []
+  }
+}
