@@ -4,6 +4,7 @@ import Nightingale from "../assets/images/nightingale.webp";
 import Rook from "../assets/images/rook.webp";
 import Zeke from "../assets/images/zeke.webp";
 import MCharacterLayout from "../MCharacter/MCharacterLayout";
+import MCharacterLayout2 from "../MCharacter/MCharacterLayout2";
 
 // TODO: REPLACE WITH DYNAMIC DATA LATER
 const activeCharacters = ["remi", "nightingale", "rook", "zeke"];
@@ -35,7 +36,7 @@ const MMain = () => {
     >
       {activeCharacters.map((char) => (
         <Grid key={char} size={{ xs: 12, sm: 12, md: 12, lg: 6 }} p={2}>
-          <MCharacterLayout
+          <MCharacterLayout2
             character={char}
             img={characterImages[char]}
             stats={characterStats[char]}
