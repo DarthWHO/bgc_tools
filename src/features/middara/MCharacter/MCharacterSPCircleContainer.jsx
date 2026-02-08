@@ -7,12 +7,7 @@ const MCharacterSPCircleContainer = () => {
     <MCharacterSPCircle key={index} index={index} />
   ));
   return (
-    <Stack
-      direction="row"
-      spacing={1}
-      justifyContent="flex-end"
-      alignItems="center"
-    >
+    <Stack direction="row" spacing={1} p={0} justifyContent="flex-start">
       {circleComponents}
     </Stack>
   );

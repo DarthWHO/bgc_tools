@@ -7,14 +7,14 @@ const cardData = [
     image: "oathswornlogo.webp",
     title: "Oathsworn Might Deck",
     description:
-      "For those that enjoy using the Oathsworn cards, the digital version of the Might Deck is available here.",
+      "For those that enjoy using the Oathsworn cards but want some table space, digital alternative or to calculate odds.",
     navigateTo: "/oathsworn",
   },
   {
     image: "middara.jpg",
     title: "Middara Character Tracker",
     description:
-      "Running out of table space? Use this digital version to track your 4 characters and their abilities.",
+      "Running out of table space? Use this digital version to track your 4 characters and their abilities. UNDER DEVELOPMENT",
     navigateTo: "/middara",
   },
 ];

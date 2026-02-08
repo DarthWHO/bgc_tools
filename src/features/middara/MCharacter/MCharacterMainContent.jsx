@@ -24,323 +24,279 @@ const MCharacterMainContent = () => {
   //   </Grid>
   // );
 
+  const [mainExpanded, setMainExpanded] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
+    if (panel === "panel0") {
+      setMainExpanded(isExpanded ? panel : false);
+    }
     setExpanded(isExpanded ? panel : false);
   };
 
   return (
     <>
       <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
+        expanded={mainExpanded === "panel0"}
+        onChange={handleChange("panel0")}
       >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
+          aria-controls="panel0bh-content"
+          id="panel0bh-header"
         >
-          <Typography component="span" sx={{ width: "15%", flexShrink: 0 }}>
-            Attack
-          </Typography>
-          <Typography component="span" sx={{ color: "text.secondary" }}>
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#000000"}
-              width={24}
-              height={24}
-            />
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography component="span" sx={{ width: "15%", flexShrink: 0 }}>
-            Spell
-          </Typography>
-          <Typography component="span" sx={{ color: "text.secondary" }}>
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#000000"}
-              width={24}
-              height={24}
-            />
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography component="span" sx={{ width: "15%", flexShrink: 0 }}>
-            Conviction
+          <Typography
+            component="span"
+            sx={{ width: "100%", flexShrink: 0, textAlign: "center" }}
+          >
+            Expand
           </Typography>
           <Typography
             component="span"
             sx={{ color: "text.secondary" }}
           ></Typography>
-          <Typography component="span" sx={{ color: "text.secondary" }}>
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#000000"}
-              width={24}
-              height={24}
-            />
-          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-          id="panel1bh-header"
-        >
-          <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
-            When my turn starts
-          </Typography>
-          <Typography component="span" sx={{ color: "text.secondary" }}>
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#800080"}
-              width={24}
-              height={24}
-            />
-            <IconProvider
-              icon="CubeWhite"
-              fillColour={"#000000"}
-              width={24}
-              height={24}
-            />
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
-            Aliquam eget maximus est, id dignissim quam.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2bh-content"
-          id="panel2bh-header"
-        >
-          <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
-            When I want to move
-          </Typography>
-          <Typography component="span" sx={{ color: "text.secondary" }}>
-            You are currently not an owner
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Donec placerat, lectus sed mattis semper, neque lectus feugiat
-            lectus, varius pulvinar diam eros in elit. Pellentesque convallis
-            laoreet laoreet.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel3"}
-        onChange={handleChange("panel3")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel3bh-content"
-          id="panel3bh-header"
-        >
-          <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
-            Advanced settings
-          </Typography>
-          <Typography component="span" sx={{ color: "text.secondary" }}>
-            Filtering has been entirely disabled for whole web server
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel4"}
-        onChange={handleChange("panel4")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
-            Personal data
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel4"}
-        onChange={handleChange("panel4")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
-            Personal data
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel4"}
-        onChange={handleChange("panel4")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
-            Personal data
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel4"}
-        onChange={handleChange("panel4")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
-            Personal data
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded === "panel4"}
-        onChange={handleChange("panel4")}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel4bh-content"
-          id="panel4bh-header"
-        >
-          <Typography component="span" sx={{ width: "33%", flexShrink: 0 }}>
-            Personal data
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer
-            sit amet egestas eros, vitae egestas augue. Duis vel est augue.
-          </Typography>
+          <Accordion
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                When my turn starts
+              </Typography>
+              <Typography
+                component="span"
+                sx={{ color: "text.secondary" }}
+              ></Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
+                feugiat. Aliquam eget maximus est, id dignissim quam.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                When I want to move
+              </Typography>
+              <Typography
+                component="span"
+                sx={{ color: "text.secondary" }}
+              ></Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
+                feugiat. Aliquam eget maximus est, id dignissim quam.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel3"}
+            onChange={handleChange("panel3")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                When I roll conviction
+              </Typography>
+              <Typography
+                component="span"
+                sx={{ color: "text.secondary" }}
+              ></Typography>
+              <Typography component="span" sx={{ color: "text.secondary" }}>
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#800080"}
+                  width={24}
+                  height={24}
+                />
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#800080"}
+                  width={24}
+                  height={24}
+                />
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#000000"}
+                  width={24}
+                  height={24}
+                />
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
+                feugiat. Aliquam eget maximus est, id dignissim quam.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel4"}
+            onChange={handleChange("panel4")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                When I cast a spell
+              </Typography>
+              <Typography component="span" sx={{ color: "text.secondary" }}>
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#800080"}
+                  width={24}
+                  height={24}
+                />
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#800080"}
+                  width={24}
+                  height={24}
+                />
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#000000"}
+                  width={24}
+                  height={24}
+                />
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Nulla facilisi. Phasellus sollicitudin nulla et quam mattis
+                feugiat. Aliquam eget maximus est, id dignissim quam.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel5"}
+            onChange={handleChange("panel5")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel5bh-content"
+              id="panel5bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                When I am attacked
+              </Typography>
+              <Typography
+                component="span"
+                sx={{ color: "text.secondary" }}
+              ></Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Donec placerat, lectus sed mattis semper, neque lectus feugiat
+                lectus, varius pulvinar diam eros in elit. Pellentesque
+                convallis laoreet laoreet.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel6"}
+            onChange={handleChange("panel6")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel6bh-content"
+              id="panel3bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                When I attack
+              </Typography>
+              <Typography component="span" sx={{ color: "text.secondary" }}>
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#800080"}
+                  width={24}
+                  height={24}
+                />
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#800080"}
+                  width={24}
+                  height={24}
+                />
+                <IconProvider
+                  icon="CubeWhite"
+                  fillColour={"#000000"}
+                  width={24}
+                  height={24}
+                />
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
+                Integer sit amet egestas eros, vitae egestas augue. Duis vel est
+                augue.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel7"}
+            onChange={handleChange("panel7")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel7bh-content"
+              id="panel7bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                When I hit
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
+                Integer sit amet egestas eros, vitae egestas augue. Duis vel est
+                augue.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel8"}
+            onChange={handleChange("panel8")}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel8bh-content"
+              id="panel8bh-header"
+            >
+              <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
+                Other
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Nunc vitae orci ultricies, auctor nunc in, volutpat nisl.
+                Integer sit amet egestas eros, vitae egestas augue. Duis vel est
+                augue.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
         </AccordionDetails>
       </Accordion>
     </>

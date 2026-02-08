@@ -1,6 +1,6 @@
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PortalBackdrop from "../../../ui/PortalBackdrop";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 
 const MSettingsMain = ({ open, setOpen }) => {
   const handleClose = () => {
@@ -15,7 +15,9 @@ const MSettingsMain = ({ open, setOpen }) => {
     <>
       <SettingsOutlinedIcon onClick={handleOpen} cursor="pointer" />
       <PortalBackdrop open={open} onClose={handleClose}>
-        <Button onClose={handleClose} />
+        <Typography variant="h6" gutterBottom>
+          Settings
+        </Typography>
       </PortalBackdrop>
     </>
   );

@@ -6,6 +6,7 @@ import MInstructions from "./MInstructions";
 
 const MHeader = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [instructionsOpen, setInstructionsOpen] = useState(false);
   return (
     <Stack
       direction="row"
@@ -16,7 +17,7 @@ const MHeader = () => {
         px: 3,
       }}
     >
-      <MInstructions open={settingsOpen} setOpen={setSettingsOpen} />
+      <MInstructions open={instructionsOpen} setOpen={setInstructionsOpen} />
       <MSearch />
       <MSettingsMain open={settingsOpen} setOpen={setSettingsOpen} />
     </Stack>

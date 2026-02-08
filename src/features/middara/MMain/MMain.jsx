@@ -25,22 +25,13 @@ const characterImages = {
 
 const MMain = () => {
   return (
-    <Grid
-      container
-      direction="row"
-      sx={{
-        justifyContent: "space-around",
-        alignItems: "center",
-      }}
-    >
+    <Grid container direction="row">
       {activeCharacters.map((char) => (
-        <Grid key={char} size={{ xs: 12, sm: 12, md: 12, lg: 6 }} p={2}>
-          <MCharacterLayout
-            character={char}
-            img={characterImages[char]}
-            stats={characterStats[char]}
-          />
-        </Grid>
+        <MCharacterLayout
+          character={char}
+          img={characterImages[char]}
+          stats={characterStats[char]}
+        />
       ))}
     </Grid>
   );

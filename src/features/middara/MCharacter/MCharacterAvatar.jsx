@@ -6,7 +6,6 @@ const MCharacterAvatar = ({ img }) => {
       component="img"
       elevation={6}
       sx={{
-        display: "block",
         height: "120px",
         width: "120px",
         objectFit: "fill",

@@ -1,78 +1,70 @@
-import { Paper, Stack, Grid, Typography, Box } from "@mui/material";
+import { Paper, Stack, Grid } from "@mui/material";
 import MCharacterName from "./MCharacterName";
 import MCharacterAvatar from "./MCharacterAvatar";
 import MCharacterCircleStatBox from "./MCharacterCircleStatBox";
 import MCharacterSPCircleContainer from "./MCharacterSPCircleContainer";
 import MCharacterMainContent from "./MCharacterMainContent";
-import IconProvider from "../svgComponents/IconProvider";
+import MChacracterDiceRefContainter from "./MChacracterDiceRefContainter";
 
 const MCharacterLayout = ({ character, img }) => {
-  const headerTabs = [
-    { label: "Attack", dice: ["#800080", "#800080", "#000000"] },
-    { label: "Spell", dice: ["#800080", "#800080", "#000000"] },
-    { label: "Conviction", dice: ["#800080", "#800080", "#000000"] },
-  ];
-
   return (
-    <Paper
-      square={false}
-      elevation={12}
-      sx={{
-        borderRadius: 2,
-        border: "1px solid #2b2b2b",
-        p: 2,
-      }}
+    <Grid
+      key={character}
+      size={{ xs: 12, sm: 12, md: 12, lg: 6 }}
+      p={2}
+      display="flex"
+      justifyContent="center"
     >
-      <Stack spacing={2}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <MCharacterAvatar img={img} />
-          <Stack spacing={1} flexGrow={1} minWidth={0}>
-            <MCharacterName character={character} />
-            <MCharacterCircleStatBox />
-          </Stack>
-          <Stack spacing={1} alignItems="flex-end">
-            <MCharacterSPCircleContainer />
-            <MCharacterCircleStatBox statType="other" />
-          </Stack>
-        </Stack>
-
-        <Grid container spacing={1.5}>
-          {headerTabs.map((tab) => (
-            <Grid key={tab.label} item xs={12} md={4}>
-              <Box
-                sx={{
-                  bgcolor: "#2f2f2f",
-                  borderRadius: 1,
-                  border: "1px solid #454545",
-                  px: 2,
-                  py: 1,
-                }}
-              >
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography
-                    variant="subtitle1"
-                    sx={{ fontWeight: 700, letterSpacing: "0.04em" }}
-                  >
-                    {tab.label}
-                  </Typography>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    {tab.dice.map((fillColour, index) => (
-                      <IconProvider
-                        key={`${tab.label}-die-${index}`}
-                        icon="CubeWhite"
-                        fillColour={fillColour}
-                        width={22}
-                        height={22}
-                      />
-                    ))}
+      <Paper
+        elevation={12}
+        sx={{
+          maxWidth: 800,
+          minWidth: 440,
+          p: 2,
+        }}
+      >
+        <Stack spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid container spacing={2} m="auto">
+              <Grid xs={12} md={4} m="auto">
+                <Stack direction="row" spacing={2} m="auto" alignItems="center">
+                  <MCharacterAvatar img={img} />
+                  <Stack direction="column" spacing={2} m="auto">
+                    <MCharacterName character={character} />
+                    <MCharacterSPCircleContainer />
                   </Stack>
                 </Stack>
-              </Box>
+              </Grid>
+
+              <Grid xs={12} md={4} m="auto">
+                <Stack direction="column" spacing={2} m="auto">
+                  <MCharacterCircleStatBox statType="core" />
+                  <MCharacterCircleStatBox statType="other" />
+                </Stack>
+              </Grid>
             </Grid>
-          ))}
-        </Grid>
-      </Stack>
-    </Paper>
+          </Grid>
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <Grid
+              container
+              spacing={2}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <MChacracterDiceRefContainter type="Attack" />
+              <MChacracterDiceRefContainter type="Spell" />
+              <MChacracterDiceRefContainter type="Conviction" />
+            </Grid>
+          </Stack>
+          <MCharacterMainContent />
+        </Stack>
+      </Paper>
+    </Grid>
   );
 };
 
