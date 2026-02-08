@@ -41,6 +41,130 @@ const MCharacterMainContent = () => {
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
+          <Typography component="span" sx={{ width: "15%", flexShrink: 0 }}>
+            Attack
+          </Typography>
+          <Typography component="span" sx={{ color: "text.secondary" }}>
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#800080"}
+              width={24}
+              height={24}
+            />
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#800080"}
+              width={24}
+              height={24}
+            />
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#000000"}
+              width={24}
+              height={24}
+            />
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+            Aliquam eget maximus est, id dignissim quam.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography component="span" sx={{ width: "15%", flexShrink: 0 }}>
+            Spell
+          </Typography>
+          <Typography component="span" sx={{ color: "text.secondary" }}>
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#800080"}
+              width={24}
+              height={24}
+            />
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#800080"}
+              width={24}
+              height={24}
+            />
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#000000"}
+              width={24}
+              height={24}
+            />
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+            Aliquam eget maximus est, id dignissim quam.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography component="span" sx={{ width: "15%", flexShrink: 0 }}>
+            Conviction
+          </Typography>
+          <Typography
+            component="span"
+            sx={{ color: "text.secondary" }}
+          ></Typography>
+          <Typography component="span" sx={{ color: "text.secondary" }}>
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#800080"}
+              width={24}
+              height={24}
+            />
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#800080"}
+              width={24}
+              height={24}
+            />
+            <IconProvider
+              icon="CubeWhite"
+              fillColour={"#000000"}
+              width={24}
+              height={24}
+            />
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat.
+            Aliquam eget maximus est, id dignissim quam.
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        expanded={expanded === "panel1"}
+        onChange={handleChange("panel1")}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
           <Typography component="span" sx={{ width: "50%", flexShrink: 0 }}>
             When my turn starts
           </Typography>
