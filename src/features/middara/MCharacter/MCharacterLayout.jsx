@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Paper, Stack, Grid } from "@mui/material";
 import MCharacterName from "./MCharacterName";
 import MCharacterAvatar from "./MCharacterAvatar";
@@ -7,6 +8,8 @@ import MCharacterMainContent from "./MCharacterMainContent";
 import MChacracterDiceRefContainter from "./MChacracterDiceRefContainter";
 
 const MCharacterLayout = ({ character, img }) => {
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
   return (
     <Grid
       key={character}
@@ -30,9 +33,15 @@ const MCharacterLayout = ({ character, img }) => {
             justifyContent="center"
             alignItems="center"
           >
-            <Grid container spacing={2} m="auto">
-              <Grid xs={12} md={4} m="auto">
-                <Stack direction="row" spacing={2} m="auto" alignItems="center">
+            <Grid container spacing={2} m="auto" p={1}>
+              <Grid m="auto">
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  m="auto"
+                  alignItems="center"
+                  justifyContent="center"
+                >
                   <MCharacterAvatar img={img} />
                   <Stack direction="column" spacing={2} m="auto">
                     <MCharacterName character={character} />
@@ -41,7 +50,7 @@ const MCharacterLayout = ({ character, img }) => {
                 </Stack>
               </Grid>
 
-              <Grid xs={12} md={4} m="auto">
+              <Grid m="auto">
                 <Stack direction="column" spacing={2} m="auto">
                   <MCharacterCircleStatBox statType="core" />
                   <MCharacterCircleStatBox statType="other" />
@@ -61,7 +70,11 @@ const MCharacterLayout = ({ character, img }) => {
               <MChacracterDiceRefContainter type="Conviction" />
             </Grid>
           </Stack>
-          <MCharacterMainContent />
+          <MCharacterMainContent
+            isOpen={detailsOpen}
+            setOpen={setDetailsOpen}
+            character={character}
+          />
         </Stack>
       </Paper>
     </Grid>

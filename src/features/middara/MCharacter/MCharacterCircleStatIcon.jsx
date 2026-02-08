@@ -58,7 +58,7 @@ const MCharacterCircleStatIcon = ({ stat }) => {
             },
           }}
         >
-          <IconProvider icon={stat} fillColour={fillColour} />
+          <IconProvider key={stat} icon={stat} fillColour={fillColour} />
         </Badge>
       </Box>
     </Box>

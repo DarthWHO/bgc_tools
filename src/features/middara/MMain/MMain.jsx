@@ -28,6 +28,7 @@ const MMain = () => {
     <Grid container direction="row">
       {activeCharacters.map((char) => (
         <MCharacterLayout
+          key={char}
           character={char}
           img={characterImages[char]}
           stats={characterStats[char]}
