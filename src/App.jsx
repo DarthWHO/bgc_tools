@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     element: <AppLayout />,
     errorElement: <Error />,
     children: [
-      { path: "/", element: <Navigate to="/oathsworn" /> },
+      { path: "/", element: <Navigate to="/welcome" /> },
       { path: "/welcome", element: <Welcome /> },
       { path: "/oathsworn", element: <Oathsworn /> },
       { path: "/middara", element: <Middara /> },

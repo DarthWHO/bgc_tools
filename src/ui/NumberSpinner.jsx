@@ -15,6 +15,7 @@ function NumberSpinner({
   label,
   error,
   size = "medium",
+  marginTop = 0,
   ...other
 }) {
   let id = React.useId();
@@ -51,7 +52,7 @@ function NumberSpinner({
         render={
           <Box
             component="span"
-            sx={{ userSelect: "none", width: "max-content" }}
+            sx={{ userSelect: "none", width: "max-content", m: marginTop }}
           />
         }
       >
