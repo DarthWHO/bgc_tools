@@ -17,7 +17,15 @@ const MCharacterAvatar = ({ img }) => {
   const id = open ? "simple-popover" : undefined;
   return (
     <>
-      <Box sx={{ position: "relative", width: "fit-content", margin: "auto" }}>
+      <Box
+        onClick={handlePopoverOpen}
+        sx={{
+          position: "relative",
+          width: "fit-content",
+          margin: "auto",
+          cursor: "pointer",
+        }}
+      >
         <Paper
           component="img"
           elevation={6}
